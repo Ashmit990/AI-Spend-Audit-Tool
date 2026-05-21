@@ -194,74 +194,76 @@ export default function SpendForm({ onSubmit }: SpendFormProps) {
   const totalMonthlySpend = tools.reduce((sum, t) => sum + t.monthlySpend, 0);
   const totalAnnualSpend = totalMonthlySpend * 12;
 
-  // Render glassmorphic loading shell until hydration matches perfectly
+  // Render solid loading shell until hydration matches perfectly
   if (!mounted) {
     return (
-      <div className="w-full max-w-3xl mx-auto bg-slate-900/60 backdrop-blur-xl border border-white/10 p-8 rounded-2xl shadow-2xl animate-pulse">
+      <div className="w-full max-w-3xl mx-auto bg-zinc-900 border border-zinc-800 p-8 rounded-3xl shadow-2xl shadow-black/40 animate-pulse">
         <div className="mb-8">
-          <div className="h-8 bg-white/10 rounded w-1/3 mb-2"></div>
-          <div className="h-4 bg-white/5 rounded w-2/3"></div>
+          <div className="h-8 bg-zinc-800 rounded w-1/3 mb-2"></div>
+          <div className="h-4 bg-zinc-800/60 rounded w-2/3"></div>
         </div>
         <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 bg-white/[0.01] border border-white/5 rounded-xl">
-            <div className="h-10 bg-white/5 rounded"></div>
-            <div className="h-10 bg-white/5 rounded"></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 bg-zinc-950 border border-zinc-800/50 rounded-2xl">
+            <div className="h-10 bg-zinc-800/60 rounded"></div>
+            <div className="h-10 bg-zinc-800/60 rounded"></div>
           </div>
-          <div className="h-6 bg-white/10 rounded w-1/4 mb-4"></div>
-          <div className="h-24 bg-white/5 rounded-xl"></div>
+          <div className="h-6 bg-zinc-800 rounded w-1/4 mb-4"></div>
+          <div className="h-24 bg-zinc-900 rounded-2xl"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-3xl mx-auto bg-slate-900/60 backdrop-blur-xl border border-white/10 p-8 rounded-2xl shadow-2xl relative overflow-hidden">
-      {/* Absolute Decorative Blur */}
-      <div className="absolute top-0 right-0 w-48 h-48 bg-violet-600/10 rounded-full blur-3xl -z-10"></div>
-      <div className="absolute bottom-0 left-0 w-48 h-48 bg-indigo-600/10 rounded-full blur-3xl -z-10"></div>
+    <div className="w-full max-w-3xl mx-auto bg-zinc-900 border border-zinc-800/80 p-8 sm:p-10 rounded-3xl shadow-2xl shadow-black/60 relative overflow-hidden">
+      {/* Subtle Ambient Decorative Glow inside the card */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-violet-500/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
 
       <div className="mb-8">
-        <div className="flex items-center gap-2 mb-2">
-          <Sparkles className="w-5 h-5 text-violet-400" />
+        <div className="flex items-center gap-2.5 mb-2">
+          <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center border border-violet-500/20">
+            <Sparkles className="w-4.5 h-4.5 text-violet-400" />
+          </div>
           <h2 className="text-2xl font-bold text-white tracking-tight">Configure Your AI Tech Stack</h2>
         </div>
-        <p className="text-slate-400 text-sm">
-          Enter the tools, seat counts, and monthly subscriptions your startup pays for. Our engine will calculate standard baseline and potential savings.
+        <p className="text-zinc-400 text-sm leading-relaxed">
+          Enter the tools, active seats, and monthly subscription costs your startup pays for. Our engine will calculate standard baseline and potential savings.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Team Details Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 bg-white/[0.02] border border-white/5 rounded-xl relative">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-zinc-950 border border-zinc-800/70 rounded-2xl relative">
           <div>
-            <label htmlFor="teamSize" className="block text-sm font-semibold text-slate-300 mb-2">
+            <label htmlFor="teamSize" className="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">
               Team Size (Active Seats)
             </label>
-            <div className="relative rounded-lg shadow-sm">
+            <div className="relative rounded-xl shadow-sm">
               <input
                 id="teamSize"
                 type="number"
                 min="1"
                 value={teamSize}
                 onChange={(e) => handleGlobalTeamSizeChange(Math.max(1, parseInt(e.target.value) || 1))}
-                className="w-full bg-slate-950 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition font-medium"
+                className="w-full bg-zinc-900 border border-zinc-800 hover:border-zinc-700 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 rounded-xl py-3 px-4 text-white focus:outline-none transition font-medium"
                 required
               />
             </div>
-            <p className="text-[11px] text-slate-500 mt-1">
+            <p className="text-[11px] text-zinc-500 mt-1.5 leading-relaxed">
               Modifying team size auto-updates seats for your standard subscriptions.
             </p>
           </div>
 
           <div>
-            <label htmlFor="useCase" className="block text-sm font-semibold text-slate-300 mb-2">
+            <label htmlFor="useCase" className="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">
               Primary Use Case
             </label>
             <select
               id="useCase"
               value={useCase}
               onChange={(e) => setUseCase(e.target.value)}
-              className="w-full bg-slate-950 border border-white/10 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition"
+              className="w-full bg-zinc-900 border border-zinc-800 hover:border-zinc-700 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 rounded-xl py-3 px-4 text-zinc-200 focus:outline-none transition cursor-pointer"
             >
               <option value="development">Software Engineering & Development</option>
               <option value="copywriting">Copywriting, Marketing & Design</option>
@@ -275,14 +277,14 @@ export default function SpendForm({ onSubmit }: SpendFormProps) {
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <Layers className="w-4 h-4 text-violet-400" />
-              <h3 className="text-lg font-semibold text-white">Active AI Tools & Subscriptions</h3>
+              <Layers className="w-4.5 h-4.5 text-violet-400" />
+              <h3 className="text-lg font-bold text-white tracking-tight">Active AI Tools & Subscriptions</h3>
             </div>
             <button
               type="button"
               onClick={addTool}
               disabled={tools.length >= AVAILABLE_TOOLS.length}
-              className="flex items-center gap-1.5 text-xs font-semibold bg-violet-600/20 hover:bg-violet-600/30 text-violet-300 border border-violet-500/20 hover:border-violet-500/30 px-3 py-1.5 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-1.5 text-xs font-semibold bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 hover:border-zinc-600 px-3.5 py-2 rounded-xl transition disabled:opacity-40 disabled:hover:bg-zinc-800 disabled:cursor-not-allowed shadow-sm"
             >
               <Plus className="w-3.5 h-3.5" /> Add Another Tool
             </button>
@@ -297,15 +299,15 @@ export default function SpendForm({ onSubmit }: SpendFormProps) {
               return (
                 <div
                   key={idx}
-                  className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 bg-slate-950/40 border border-white/5 rounded-xl items-end relative group hover:border-white/10 transition"
+                  className="grid grid-cols-1 md:grid-cols-12 gap-4 p-5 bg-zinc-950 border border-zinc-800 rounded-2xl items-end relative group hover:border-zinc-800 transition duration-200"
                 >
                   {/* Tool Name */}
                   <div className="md:col-span-3">
-                    <label className="block text-xs font-semibold text-slate-400 mb-1.5">Tool Name</label>
+                    <label className="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 mb-2">Tool Name</label>
                     <select
                       value={tool.name}
                       onChange={(e) => handleToolNameChange(idx, e.target.value as ToolName)}
-                      className="w-full bg-slate-950 border border-white/10 rounded-md py-1.5 px-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition"
+                      className="w-full bg-zinc-900 border border-zinc-800 hover:border-zinc-700 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 rounded-xl py-2 px-3 text-sm text-white focus:outline-none transition cursor-pointer"
                     >
                       {AVAILABLE_TOOLS.map((t) => (
                         <option
@@ -321,11 +323,11 @@ export default function SpendForm({ onSubmit }: SpendFormProps) {
 
                   {/* Plan Level */}
                   <div className="md:col-span-3">
-                    <label className="block text-xs font-semibold text-slate-400 mb-1.5">Plan Level</label>
+                    <label className="block text-[11px] font-bold uppercase tracking-wider text-zinc-500 mb-2">Plan Level</label>
                     <select
                       value={tool.plan}
                       onChange={(e) => handlePlanChange(idx, e.target.value)}
-                      className="w-full bg-slate-950 border border-white/10 rounded-md py-1.5 px-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition"
+                      className="w-full bg-zinc-900 border border-zinc-800 hover:border-zinc-700 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 rounded-xl py-2 px-3 text-sm text-white focus:outline-none transition cursor-pointer"
                     >
                       {plans.map((p) => (
                         <option key={p.name} value={p.name}>
@@ -338,10 +340,10 @@ export default function SpendForm({ onSubmit }: SpendFormProps) {
                   {/* Seats & Cost Sub-Grid */}
                   <div className="md:col-span-5 grid grid-cols-2 gap-3">
                     <div>
-                      <div className="flex justify-between items-center mb-1.5">
-                        <label className="block text-xs font-semibold text-slate-400">Seats</label>
+                      <div className="flex justify-between items-center mb-2">
+                        <label className="block text-[11px] font-bold uppercase tracking-wider text-zinc-500">Seats</label>
                         {currentPlanDetails.isApiOrCustom && (
-                          <span className="text-[9px] text-slate-500 font-mono">N/A (API)</span>
+                          <span className="text-[9px] text-zinc-500 font-mono">N/A</span>
                         )}
                       </div>
                       <input
@@ -350,18 +352,18 @@ export default function SpendForm({ onSubmit }: SpendFormProps) {
                         value={tool.seats}
                         disabled={currentPlanDetails.isApiOrCustom}
                         onChange={(e) => handleSeatsChange(idx, Math.max(1, parseInt(e.target.value) || 1))}
-                        className="w-full bg-slate-950 border border-white/10 rounded-md py-1.5 px-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                        className="w-full bg-zinc-900 border border-zinc-800 hover:border-zinc-700 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 rounded-xl py-2 px-3 text-sm text-white focus:outline-none transition disabled:opacity-40 disabled:cursor-not-allowed font-medium"
                         required
                       />
                     </div>
 
                     <div>
-                      <div className="flex justify-between items-center mb-1.5">
-                        <label className="block text-xs font-semibold text-slate-400">Cost/mo ($)</label>
-                        <span className={`text-[9px] px-1 rounded font-mono font-medium ${
+                      <div className="flex justify-between items-center mb-2">
+                        <label className="block text-[11px] font-bold uppercase tracking-wider text-zinc-500">Cost/mo ($)</label>
+                        <span className={`text-[9px] px-1.5 py-0.5 rounded font-mono font-medium ${
                           isSpendAutoCalculated(tool) 
-                            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
-                            : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/25' 
+                            : 'bg-amber-500/10 text-amber-400 border border-amber-500/25'
                         }`}>
                           {isSpendAutoCalculated(tool) ? 'Auto' : 'Custom'}
                         </span>
@@ -371,19 +373,19 @@ export default function SpendForm({ onSubmit }: SpendFormProps) {
                         min="0"
                         value={tool.monthlySpend}
                         onChange={(e) => updateTool(idx, { monthlySpend: Math.max(0, parseFloat(e.target.value) || 0) })}
-                        className="w-full bg-slate-950 border border-white/10 rounded-md py-1.5 px-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500 transition font-mono font-medium"
+                        className="w-full bg-zinc-900 border border-zinc-800 hover:border-zinc-700 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 rounded-xl py-2 px-3 text-sm text-white focus:outline-none transition font-mono font-medium"
                         required
                       />
                     </div>
                   </div>
 
                   {/* Remove Button */}
-                  <div className="md:col-span-1 flex justify-end md:pb-1">
+                  <div className="md:col-span-1 flex justify-end md:pb-0.5">
                     <button
                       type="button"
                       onClick={() => removeTool(idx)}
                       disabled={tools.length <= 1}
-                      className="p-2 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition disabled:opacity-30 disabled:hover:bg-transparent"
+                      className="p-2.5 text-zinc-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition disabled:opacity-20 disabled:hover:bg-transparent"
                       title="Remove subscription"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -396,35 +398,35 @@ export default function SpendForm({ onSubmit }: SpendFormProps) {
         </div>
 
         {/* Real-time Summary Card */}
-        <div className="p-5 bg-gradient-to-br from-violet-950/20 to-indigo-950/20 border border-violet-500/10 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-violet-600/10 flex items-center justify-center border border-violet-500/20">
+        <div className="p-6 bg-zinc-950 border border-zinc-800 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-xl bg-violet-500/10 flex items-center justify-center border border-violet-500/20 shadow-sm">
               <Calculator className="w-5 h-5 text-violet-400" />
             </div>
             <div>
-              <p className="text-xs text-slate-400 font-semibold tracking-wide uppercase">Total Estimated Spend</p>
+              <p className="text-[10px] text-zinc-500 font-bold tracking-wider uppercase">Total Estimated Spend</p>
               <div className="flex items-baseline gap-2">
                 <span className="text-2xl font-bold text-white font-mono">${totalMonthlySpend.toLocaleString()}</span>
-                <span className="text-slate-500 text-xs font-semibold">/ month</span>
+                <span className="text-zinc-500 text-xs font-semibold">/ month</span>
               </div>
             </div>
           </div>
           
-          <div className="text-left sm:text-right border-l sm:border-l-0 sm:border-r border-white/5 pl-4 sm:pl-0 sm:pr-4">
-            <p className="text-xs text-slate-500">Estimated Annual Outflow</p>
-            <p className="text-lg font-bold text-slate-300 font-mono">${totalAnnualSpend.toLocaleString()}<span className="text-xs text-slate-500 font-normal">/yr</span></p>
+          <div className="text-left sm:text-right border-l sm:border-l-0 sm:border-r border-zinc-800 pl-5 sm:pl-0 sm:pr-5">
+            <p className="text-[10px] text-zinc-500 font-bold tracking-wider uppercase">Estimated Annual Outflow</p>
+            <p className="text-xl font-bold text-zinc-300 font-mono">${totalAnnualSpend.toLocaleString()}<span className="text-xs text-zinc-500 font-normal">/yr</span></p>
           </div>
         </div>
 
         {/* Submit */}
-        <div className="pt-4 border-t border-white/5 flex flex-col sm:flex-row gap-4 items-center justify-between">
-          <div className="flex items-center gap-1.5 text-xs text-slate-500">
-            <Info className="w-3.5 h-3.5 text-slate-400" />
-            <span>Form state is saved locally automatically.</span>
+        <div className="pt-6 border-t border-zinc-800 flex flex-col sm:flex-row gap-4 items-center justify-between">
+          <div className="flex items-center gap-2 text-xs text-zinc-500">
+            <Info className="w-4 h-4 text-zinc-400" />
+            <span>Form values are saved locally automatically.</span>
           </div>
           <button
             type="submit"
-            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-indigo-500/25 transition-all transform hover:-translate-y-0.5 duration-200"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold py-3.5 px-7 rounded-xl shadow-lg shadow-violet-950/40 hover:shadow-violet-500/30 transition-all duration-200"
           >
             Run AI Spend Audit <ArrowRight className="w-4 h-4" />
           </button>
