@@ -1,18 +1,51 @@
 'use client';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import SpendForm from '@/components/SpendForm';
-import { 
-  ShieldCheck, 
-  Layers, 
-  TrendingDown, 
-  CheckCircle, 
-  ArrowRight, 
-  Terminal, 
-  PieChart, 
-  Zap 
+import {
+  ShieldCheck,
+  Layers,
+  TrendingDown,
+  ArrowRight,
+  Loader2,
 } from 'lucide-react';
+import { AuditInput } from '@/types';
 
 export default function Home() {
+  const router = useRouter();
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const handleAuditSubmit = async (data: AuditInput) => {
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      const res = await fetch('/api/audit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setSubmitError(json.error || 'Something went wrong. Please try again.');
+        return;
+      }
+      // If we got an auditId, navigate to the report page
+      if (json.auditId) {
+        router.push(`/audit/${json.auditId}`);
+      } else {
+        // No Supabase configured — store result in sessionStorage and redirect
+        sessionStorage.setItem('audit-result', JSON.stringify(json));
+        router.push('/audit/preview');
+      }
+    } catch {
+      setSubmitError('Network error. Please check your connection and try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col justify-between font-sans relative overflow-hidden">
       
@@ -74,8 +107,19 @@ export default function Home() {
         </div>
 
         {/* Dynamic Spend Form */}
-        <div className="w-full mb-28">
-          <SpendForm onSubmit={(data) => console.log('Audit submitted:', data)} />
+        <div className="w-full mb-28 relative">
+          {submitting && (
+            <div className="absolute inset-0 bg-zinc-950/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center rounded-3xl gap-4">
+              <Loader2 className="w-8 h-8 animate-spin text-violet-400" />
+              <p className="text-sm text-zinc-300 font-medium">Running your AI spend audit…</p>
+            </div>
+          )}
+          <SpendForm onSubmit={handleAuditSubmit} />
+          {submitError && (
+            <p className="mt-4 text-xs text-rose-400 bg-rose-500/10 border border-rose-500/20 rounded-xl px-4 py-3 text-center">
+              {submitError}
+            </p>
+          )}
         </div>
 
         {/* 4. Trust/Partner Logo Proof Grid (Premium Minimalist Look) */}
@@ -162,7 +206,7 @@ export default function Home() {
           <div className="max-w-2xl mx-auto text-center mb-16 space-y-3">
             <h2 className="text-3xl font-extrabold text-white tracking-tight">How the Spend Audit Works</h2>
             <p className="text-zinc-400 text-sm leading-relaxed">
-              Three clean steps to uncover hidden savings and regain full visibility over your team's software expenses.
+              Three clean steps to uncover hidden savings and regain full visibility over your team&apos;s software expenses.
             </p>
           </div>
 
