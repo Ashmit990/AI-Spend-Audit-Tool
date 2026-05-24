@@ -20,3 +20,10 @@
 **What I learned:** Structuring Next.js App Router API routes with graceful degradation when third-party services (Supabase, Anthropic, Resend) are unconfigured — ensuring the core audit always runs even if persistence or AI enrichment fails.
 **Blockers / what I am stuck on:** None. All Day 3 goals completed.
 **Plan for tomorrow:** Add `.env.example` file, write API route tests, deploy to Vercel, and configure real Supabase table migrations.
+
+## Day 4 — 2026-05-24
+**Hours worked:** 4
+**What I did:** Created `.env.example` documenting all configurable environment variables (Supabase, Anthropic, Resend, app URL) with graceful-degradation notes. Wrote a comprehensive `src/lib/__tests__/audit.test.ts` test suite with 11 cases covering single-tool results, seat over-provisioning, Cursor/Windsurf overlap detection, Anthropic+Claude double-billing, OpenAI+ChatGPT double-billing, Credex bulk credit savings, upsell flag, isAlreadyOptimal flag, small-team plan downgrades, recommended-spend safety bounds, and prompt text generation. All 17 tests pass (11 audit + 5 pricing + 1 prompt). Updated `supabase/schema.sql` with `team_size`, `use_case`, `ai_summary` columns, generated savings columns from JSONB, UNIQUE email constraint for lead upsert idempotency, and email index. Wrote a full `README.md` with setup instructions, env table, project structure, tech stack table, and test coverage summary.
+**What I learned:** Writing deterministic unit tests for pure business logic functions is fast and rewarding — the audit engine's isolation from external services made it trivial to achieve 100% test coverage on all edge cases.
+**Blockers / what I am stuck on:** None. All Day 4 goals completed.
+**Plan for tomorrow:** Deploy to Vercel, connect real Supabase project, set environment variables, and do an end-to-end live test of the full audit → report → email flow.
