@@ -3,31 +3,39 @@ import { AuditInput } from '@/types';
 import { runAudit, buildAuditPromptText } from '@/lib/audit';
 import { generateAuditSummary } from '@/lib/anthropic';
 import { getSupabaseServerClient } from '@/lib/supabase';
+import { validateAuditInput, sanitizeAuditInput } from '@/lib/validate';
 
 export async function POST(req: NextRequest) {
   try {
     const body: AuditInput = await req.json();
 
-    // Validate basic shape
-    if (!body || !Array.isArray(body.tools) || body.tools.length === 0) {
-      return NextResponse.json({ error: 'Invalid audit input' }, { status: 400 });
+    // 1. Validate input
+    const validation = validateAuditInput(body);
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: 'Invalid input', details: validation.errors },
+        { status: 400 }
+      );
     }
 
-    // 1. Run deterministic audit logic
-    const auditResult = runAudit(body);
+    // 2. Sanitize input
+    const sanitized = sanitizeAuditInput(body);
 
-    // 2. Build Anthropic prompt text and get AI summary (gracefully falls back if no API key)
-    const promptText = buildAuditPromptText(body, auditResult);
+    // 3. Run deterministic audit logic
+    const auditResult = runAudit(sanitized);
+
+    // 4. Build Anthropic prompt text and get AI summary (falls back if no API key)
+    const promptText = buildAuditPromptText(sanitized, auditResult);
     const aiSummary = await generateAuditSummary(promptText);
 
-    // 3. Persist to Supabase
+    // 5. Persist to Supabase
     const supabase = getSupabaseServerClient();
     const { data: insertedRow, error: dbError } = await supabase
       .from('audits')
       .insert({
-        team_size: body.teamSize,
-        use_case: body.useCase,
-        tools_input: body.tools,
+        team_size: sanitized.teamSize,
+        use_case: sanitized.useCase,
+        tools_input: sanitized.tools,
         audit_result: auditResult,
         ai_summary: aiSummary,
       })
@@ -35,7 +43,6 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (dbError) {
-      // Log but don't fail — return result without a persisted ID
       console.error('Supabase insert error:', dbError.message);
       return NextResponse.json(
         {
@@ -49,11 +56,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(
-      {
-        auditResult,
-        aiSummary,
-        auditId: insertedRow?.id ?? null,
-      },
+      { auditResult, aiSummary, auditId: insertedRow?.id ?? null },
       { status: 200 }
     );
   } catch (err) {

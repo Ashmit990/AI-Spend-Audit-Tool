@@ -14,7 +14,55 @@ import {
   BadgeCheck,
   ChevronDown,
   ChevronUp,
+  Copy,
+  Check,
 } from 'lucide-react';
+
+// ---------------------------------------------------------------------------
+// Share Button
+// ---------------------------------------------------------------------------
+function ShareButton({ auditId }: { auditId: string | null }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    const url = auditId
+      ? `${window.location.origin}/audit/${auditId}`
+      : window.location.href;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Fallback for browsers without clipboard API
+      const ta = document.createElement('textarea');
+      ta.value = url;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  return (
+    <button
+      onClick={handleCopy}
+      className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl border transition-all duration-200 ${
+        copied
+          ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+          : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-200'
+      }`}
+      title="Copy shareable link"
+    >
+      {copied ? (
+        <><Check className="w-3.5 h-3.5" /> Copied!</>
+      ) : (
+        <><Copy className="w-3.5 h-3.5" /> Share Report</>
+      )}
+    </button>
+  );
+}
 
 interface AuditReportProps {
   auditId: string | null;
@@ -236,12 +284,15 @@ export default function AuditReport({ auditId, auditResult, aiSummary }: AuditRe
               Credex <span className="text-zinc-500 text-sm font-normal">Spend Audit</span>
             </span>
           </a>
-          <a
-            href="/"
-            className="text-xs text-zinc-400 hover:text-white transition font-medium flex items-center gap-1.5"
-          >
-            ← New Audit
-          </a>
+          <div className="flex items-center gap-3">
+            <ShareButton auditId={auditId} />
+            <a
+              href="/"
+              className="text-xs text-zinc-400 hover:text-white transition font-medium flex items-center gap-1.5"
+            >
+              ← New Audit
+            </a>
+          </div>
         </div>
       </header>
 

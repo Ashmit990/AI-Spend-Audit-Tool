@@ -1,0 +1,12 @@
+{
+  "name": "Credex Spend Audit",
+  "short_name": "Credex",
+  "description": "Audit your startup AI subscriptions and save up to 50%",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
+  "icons": [
+    { "src": "/favicon.ico", "sizes": "48x48", "type": "image/x-icon" }
+  ]
+}

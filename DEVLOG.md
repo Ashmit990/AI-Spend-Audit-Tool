@@ -27,3 +27,11 @@
 **What I learned:** Writing deterministic unit tests for pure business logic functions is fast and rewarding — the audit engine's isolation from external services made it trivial to achieve 100% test coverage on all edge cases.
 **Blockers / what I am stuck on:** None. All Day 4 goals completed.
 **Plan for tomorrow:** Deploy to Vercel, connect real Supabase project, set environment variables, and do an end-to-end live test of the full audit → report → email flow.
+
+## Day 5 — 2026-05-25
+**Hours worked:** 4
+**What I did:** Implemented input validation and sanitization for `/api/audit` and `/api/leads` routes to protect the server from invalid payloads. Wrote a comprehensive unit test suite with 20 tests verifying validation rules (UUID v4 check, string limits, array bounds, duplicate tools). Built a "Share Report" clipboard copy component in `AuditReport.tsx`. Integrated custom Next.js fallback layouts (global loading spinner, custom error page boundary, and 404 page). Configured safety headers and redirect paths in `next.config.mjs` and initialized a web manifest (`site.webmanifest`). Verified all 40 tests pass and successfully compiled the production build.
+**What I learned:** Layering strict validation schemas (validation → sanitization → execution) ensures the API remains robust against bad client payloads or script-based requests.
+**Blockers / what I am stuck on:** None.
+**Plan for tomorrow:** Finalize live deployment configuration, run end-to-end integration tests on staging environment, and start marketing preparation.
+
