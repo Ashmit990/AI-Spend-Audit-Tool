@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "diagnose": "npx tsx src/bin/diagnose.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.97.1",
