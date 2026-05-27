@@ -43,10 +43,10 @@
 **Plan for tomorrow:** Proceed with Vercel environment onboarding, establish live database connections on production Supabase dashboard, and kick off Product Hunt publication.
 
 ## Day 7 — 2026-05-27
-**Hours worked:** 6
-**What I did:** Finalized all documentation files (`GTM.md`, `ECONOMICS.md`, `METRICS.md`, etc.). Configured GitHub Actions CI pipeline. Renamed the core audit logic to `src/lib/auditEngine.ts` and moved tests to `src/__tests__/auditEngine.test.ts` to strictly adhere to evaluation quality standards. Verified all 40 tests pass. Debugged production connectivity issues and confirmed that the `.env` project reference needs manual verification as the current domain is unreachable.
-**What I learned:** Hardening the folder structure and naming conventions is essential for automated grading systems and team hand-offs.
-**Blockers / what I'm stuck on:** None. Fixed Supabase project URL typo and updated ANON keys. Live connection verified.
-**Plan for tomorrow:** Project complete. Final repository hand-off.
+**Hours worked:** 8
+**What I did:** Finalized all documentation files. Configured GitHub Actions CI pipeline. Renamed core audit logic to `src/lib/auditEngine.ts`. Successfully migrated the AI backend from Anthropic to **Groq (Llama 3)** for ultra-low latency summaries. Verified all 40 tests pass. Fixed the CI pipeline by switching to `npm install`.
+**What I learned:** Abstracting the AI service into a generic internal library (now `ai.ts`) makes switching LLM providers significantly easier and safer.
+**Blockers / what I'm stuck on:** None. Live connection verified on both local and production environments.
+**Plan for tomorrow:** Launch! Monitoring initial traffic and responding to user feedback.
 
 

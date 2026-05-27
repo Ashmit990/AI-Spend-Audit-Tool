@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AuditInput } from '@/types';
 import { runAudit, buildAuditPromptText } from '@/lib/auditEngine';
-import { generateAuditSummary } from '@/lib/anthropic';
+import { generateAuditSummary } from '@/lib/ai';
 import { getSupabaseServerClient } from '@/lib/supabase';
 import { validateAuditInput, sanitizeAuditInput } from '@/lib/validate';
 

@@ -13,7 +13,7 @@ graph TD
         Frontend --> API_Leads[API: /api/leads]
         
         API_Audit --> AuditEngine[lib: Audit Engine]
-        API_Audit --> AI_Service[lib: Anthropic Claude 3.5]
+        API_Audit --> AI_Service[lib: Groq Llama 3]
         API_Leads --> Email_Service[lib: Resend Transactional]
     end
     
@@ -32,7 +32,7 @@ graph TD
 2.  **Audit Execution:**
     *   Client sends payload to `/api/audit`.
     *   **Audit Engine:** A deterministic pure-function library (`src/lib/auditEngine.ts`) calculates savings based on team size vs plans.
-    *   **AI Synthesis:** If configured, the Anthropic API generates a personalized summary paragraph.
+    *   **AI Synthesis:** If configured, the Groq API (Llama 3) generates a personalized summary paragraph.
     *   **Persistence:** The audit result is stored in Supabase under a unique UUID.
 3.  **Lead Capture:**
     *   User views the report and submits their email.
@@ -43,7 +43,7 @@ graph TD
 -   **Next.js 14 (App Router):** Chosen for SEO benefits (Server Components) and rapid development of full-stack API routes.
 -   **Tailwind CSS:** Enables a cohesive "Linear-style" glassmorphic UI with zero runtime overhead.
 -   **Supabase:** Provides an instant Postgres backend with Row Level Security (RLS) for public sharing.
--   **Anthropic Claude 3.5 Sonnet:** Superior reasoning for generating professional financial summaries compared to GPT-4o.
+-   **Groq Llama 3:** Elite inference speed for generating professional financial summaries in under 1 second.
 -   **Resend:** Modern developer experience for transactional emails with high deliverability.
 
 ## Scaling Notes

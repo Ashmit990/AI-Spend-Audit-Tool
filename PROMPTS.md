@@ -1,4 +1,4 @@
-# Anthropic API Prompts & Strategy
+# AI Prompts & Orchestration (Groq Llama 3)
 
 This document details the configuration and reasoning behind the AI summaries generated for audit reports.
 
@@ -30,7 +30,7 @@ Provide a ~100 word optimization summary paragraph.
 1.  **Professional Persona:** We set the persona to "world-class financial analyst" to ensure the tone is authoritative and trustworthy, which is crucial for a tool aimed at founders.
 2.  **Constraint-Driven:** The ~100-word constraint ensures the summary remains readable and fits well within the UI of the report page.
 3.  **Lead-Gen Focus:** The prompt specifically mentions Credex and "unlocking discounts," aligning the summary with the ultimate goal of lead generation.
-4.  **No Fluff:** By instructing Claude to "avoid fluffy intro/outro sentences," we maximize the value of every word spent on actual analysis.
+4.  **No Fluff:** By instructing Llama 3 to "avoid fluffy intro/outro sentences," we maximize the value of every word spent on actual analysis.
 
 ## What Didn't Work
 -   **Generic Prompts:** Initially, a simpler "summarize this audit" prompt produced generic advice that didn't reference the specific numbers or tool names effectively.

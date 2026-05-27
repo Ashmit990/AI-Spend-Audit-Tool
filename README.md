@@ -1,12 +1,12 @@
 # AI Spend Audit Tool
 
-A premium lead-generation engine that helps startups audit and optimize their AI subscription spending. Built with **Next.js 14**, **TypeScript**, **Tailwind CSS**, **Supabase**, **Anthropic Claude**, and **Resend**.
+A premium lead-generation engine that helps startups audit and optimize their AI subscription spending. Built with **Next.js 14**, **TypeScript**, **Tailwind CSS**, **Supabase**, **Groq (Llama 3)**, and **Resend**.
 
 ## ✨ Features
 
 - **Interactive Spend Form** — Configure 8 AI tools (Cursor, GitHub Copilot, Claude, ChatGPT, Gemini, Windsurf, Anthropic API, OpenAI API) with dynamic plan selection, seat counts, and real-time cost calculations
 - **Deterministic Audit Engine** — Detects seat over-provisioning, license overlap, plan right-sizing opportunities, and API double-billing
-- **AI-Powered Summaries** — Claude 3.5 Sonnet generates personalized optimization summaries
+- **AI-Powered Summaries** — Groq (Llama 3.3 70B) generates personalized optimization summaries
 - **Lead Capture** — Email collection with Resend transactional emails
 - **Persistent Storage** — Supabase stores audit results with shareable report URLs
 - **Graceful Degradation** — Works fully without Supabase/Anthropic/Resend (uses fallbacks)
@@ -39,7 +39,7 @@ cp .env.example .env.local
 | `NEXT_PUBLIC_SUPABASE_URL` | No | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | No | Supabase anonymous key |
 | `SUPABASE_SERVICE_ROLE_KEY` | No | Supabase service role key |
-| `ANTHROPIC_API_KEY` | No | Anthropic API key for AI summaries |
+| `GROQ_API_KEY` | No | Groq API key for AI summaries (Llama 3) |
 | `RESEND_API_KEY` | No | Resend API key for emails |
 | `NEXT_PUBLIC_APP_URL` | No | Public app URL (defaults to localhost:3000) |
 
@@ -93,7 +93,7 @@ src/
 ├── lib/
 │   ├── auditEngine.ts            # Core audit processing engine
 │   ├── pricing.ts                # Pricing catalog for all 8 tools
-│   ├── anthropic.ts              # Anthropic Claude wrapper
+│   ├── ai.ts                     # Groq Llama 3 AI wrapper
 │   ├── supabase.ts               # Supabase client setup
 │   ├── resend.ts                 # Resend email wrapper
 │   └── __tests__/
@@ -120,7 +120,7 @@ supabase/
 | Language | TypeScript |
 | Styling | Tailwind CSS |
 | Database | Supabase (PostgreSQL) |
-| AI | Anthropic Claude 3.5 Sonnet |
+| AI | Groq (Llama 3) |
 | Email | Resend |
 | Icons | Lucide React |
 | Testing | Jest + ts-jest |

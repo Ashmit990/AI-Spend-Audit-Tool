@@ -16,7 +16,7 @@ In the second week, I would focus on "Depth over Breadth." Specifically:
 ## 4. How you used AI tools
 AI was integral to this project in two distinct ways:
 - **Development Tooling:** I used GitHub Copilot and Claude to scaffold the initial React components and write the complex test cases for the audit engine. This significantly sped up the "boilerplate" parts of the project, allowing me to focus on the unique business logic.
-- **Product Feature:** The Anthropic Claude-3.5-Sonnet API is the "finishing touch" on the audit results. While the numbers are hardcoded, the AI summary provides that "consultant-level" feel that makes the tool shareable and credible to founders.
+- **Product Feature:** The Groq Llama 3 API is the "finishing touch" on the audit results. While the numbers are calculated deterministically, the AI summary provides that "consultant-level" feel that makes the tool shareable and credible to founders. Migrating from Anthropic to Groq on the final day highlighted the value of clean abstraction in the AI services layer.
 
 ## 5. Self-ratings (1-10)
 - **Discipline:** 10/10 (Strictly followed the Day 1–6 commit plan and documentation requirements).

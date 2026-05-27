@@ -1,6 +1,6 @@
 import { loadEnvConfig } from '@next/env';
 import { createClient } from '@supabase/supabase-js';
-import Anthropic from '@anthropic-ai/sdk';
+import Groq from 'groq-sdk';
 import { Resend } from 'resend';
 
 // 1. Load Next.js Environment Variables
@@ -55,31 +55,30 @@ async function checkSupabase() {
   }
 }
 
-async function checkAnthropic() {
-  console.log('\n🧠 Checking Anthropic Claude integration...');
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+async function checkGroq() {
+  console.log('\n🧠 Checking Groq Llama 3 integration...');
+  const apiKey = process.env.GROQ_API_KEY;
 
   if (!apiKey) {
-    console.log('  ⚠️  Missing ANTHROPIC_API_KEY. The app will fall back to static text summaries.');
+    console.log('  ⚠️  Missing GROQ_API_KEY. The app will fall back to static text summaries.');
     return true;
   }
 
-  console.log('  - Anthropic Key defined. Testing API connectivity...');
+  console.log('  - Groq Key defined. Testing API connectivity...');
   try {
-    const anthropic = new Anthropic({ apiKey });
-    const response = await anthropic.messages.create({
-      model: 'claude-3-5-sonnet-20241022',
+    const groq = new Groq({ apiKey });
+    const response = await groq.chat.completions.create({
+      model: 'llama-3.3-70b-versatile',
       max_tokens: 5,
       messages: [{ role: 'user', content: 'Verify connectivity by replying with "Ready".' }],
     });
 
-    const contentBlock = response.content[0];
-    const reply = contentBlock && contentBlock.type === 'text' ? contentBlock.text.trim() : '';
+    const reply = response.choices[0]?.message?.content?.trim() || '';
     
-    console.log(`  ✓ Anthropic connection successful! Response: "${reply}"`);
+    console.log(`  ✓ Groq connection successful! Response: "${reply}"`);
     return true;
   } catch (err) {
-    console.log(`  ❌ Anthropic API failed: ${err instanceof Error ? err.message : err}`);
+    console.log(`  ❌ Groq API failed: ${err instanceof Error ? err.message : err}`);
     return false;
   }
 }
@@ -117,7 +116,7 @@ async function run() {
   let ok = true;
   
   const supabaseOk = await checkSupabase();
-  const anthropicOk = await checkAnthropic();
+  const groqOk = await checkGroq();
   const resendOk = await checkResend();
 
   console.log('\n====================================================');
@@ -131,11 +130,11 @@ async function run() {
     console.log('  🗄️  Supabase Connection: FAILED');
   }
 
-  if (anthropicOk) {
-    console.log('  🧠  Anthropic Claude API: OK');
+  if (groqOk) {
+    console.log('  🧠  Groq Llama 3 API:   OK');
   } else {
     ok = false;
-    console.log('  🧠  Anthropic Claude API: FAILED');
+    console.log('  🧠  Groq Llama 3 API:   FAILED');
   }
 
   if (resendOk) {

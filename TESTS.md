@@ -9,7 +9,7 @@ This is the primary test file for the Audit Engine (`auditEngine.ts`). It covers
 - **Baseline Accuracy:** Ensures math is correct for a simple single-tool setup.
 - **Seat Over-provisioning:** Verifies that the engine correctly flags excess seats based on team size.
 - **Plan Right-sizing:** Checks if the engine suggests downgrades for small teams (≤3 people).
-- **Double-billing Detection:** Specifically tests the overlap between Claude/Anthropic API and ChatGPT/OpenAI API.
+- **Double-billing Detection:** Specifically tests the overlap between Claude/Anthropic subscription and ChatGPT/OpenAI subscription.
 - **Bulk Discount Logic:** Verifies the 15% savings calculation for direct API users via Credex.
 - **Credex Upsell Flag:** Triggers only when monthly savings ≥ $50.
 - **"Already Optimal" Flag:** Triggers when savings are negligible (< $5).
@@ -20,13 +20,9 @@ Verifies the pricing schema integrity.
 - **Cost Integrity:** Checks that costs are numeric and non-negative.
 
 ### 3. `src/lib/__tests__/validate.test.ts`
-Validates input sanitization for the API routes.
+Tests the input validation layer for API routes. It ensures:
 - **Payload Validation:** Ensures team size and tool selections are within expected ranges.
 - **ID Integrity:** Verifies UUID format for audit requests.
-- **Lookup Accuracy:** Verifies the helper functions for retrieving plan details by name.
-
-### 3. `validate.test.ts`
-Tests the input validation layer for API routes.
 - **Team Size Bounds:** Ensures team size is a positive integer.
 - **Tool List Limits:** Prevents over-sized or empty tool arrays.
 - **String Sanitization:** Checks for name length limits and character escaping.
