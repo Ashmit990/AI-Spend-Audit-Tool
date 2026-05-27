@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# Sitemap
+Sitemap: https://ai-spend-audit-tool-46u4zw7nt-ashmit-dahals-projects.vercel.app/sitemap.xml
