@@ -9,7 +9,6 @@ import {
   TrendingDown,
   ArrowRight,
   Loader2,
-  Sparkles,
   Calculator,
   Mail,
   Zap,
