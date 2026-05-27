@@ -50,7 +50,7 @@ function ShareButton({ auditId }: { auditId: string | null }) {
       className={`flex items-center gap-1.5 text-xs font-bold px-4 py-2.5 rounded-md border transition-all duration-200 ${
         copied
           ? 'bg-emerald-50 text-emerald-600 border-emerald-200 shadow-sm'
-          : 'bg-background border-border hover:border-primary/50 text-foreground/60 hover:text-primary shadow-sm'
+          : 'bg-background border-border hover:border-primary/50 text-slate-700 hover:text-primary shadow-sm'
       }`}
       title="Copy shareable link"
     >
@@ -96,12 +96,12 @@ function ToolRow({ rec }: { rec: ToolRecommendation }) {
                 ? 'bg-emerald-500 shadow-emerald-500/20'
                 : rec.savings > 0
                 ? 'bg-amber-500 shadow-amber-500/20'
-                : 'bg-slate-300 dark:bg-slate-700'
+                : 'bg-slate-400'
             }`}
           />
           <div className="flex flex-col">
-            <span className="font-bold text-foreground text-sm leading-none mb-1">{rec.name}</span>
-            <span className="text-[10px] text-foreground/40 font-bold uppercase tracking-wider">
+            <span className="font-bold text-slate-900 text-sm leading-none mb-1">{rec.name}</span>
+            <span className="text-[10px] text-slate-700 font-bold uppercase tracking-wider">
               {rec.currentPlan}
             </span>
           </div>
@@ -109,52 +109,52 @@ function ToolRow({ rec }: { rec: ToolRecommendation }) {
 
         <div className="flex items-center gap-4">
           {hasSavings ? (
-            <span className="text-xs font-black text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/40 px-3 py-1.5 rounded-md">
+            <span className="text-xs font-black text-emerald-600 bg-emerald-50 border border-emerald-100 px-3 py-1.5 rounded-md">
               −${fmt(rec.savings)}/mo
             </span>
           ) : (
-            <span className="text-xs font-bold text-foreground/30 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 rounded-md">
+            <span className="text-xs font-bold text-slate-600 bg-slate-50 px-3 py-1.5 rounded-md border border-slate-100">
               No Waste
             </span>
           )}
           {expanded ? (
-            <ChevronUp className="w-5 h-5 text-foreground/20" />
+            <ChevronUp className="w-5 h-5 text-slate-400" />
           ) : (
-            <ChevronDown className="w-5 h-5 text-foreground/20" />
+            <ChevronDown className="w-5 h-5 text-slate-400" />
           )}
         </div>
       </button>
 
       {expanded && (
-        <div className="px-6 pb-6 border-t border-border pt-6 space-y-5 bg-slate-50/30 dark:bg-slate-900/10">
+        <div className="px-6 pb-6 border-t border-slate-100 pt-6 space-y-5 bg-slate-50/50">
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-background rounded-md p-5 border border-border shadow-sm">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-foreground/30 mb-2">
+            <div className="bg-white rounded-md p-5 border border-slate-200 shadow-sm">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-600 mb-2">
                 Current Spend
               </p>
               <div className="flex items-baseline gap-1">
-                <span className="text-xl font-black text-foreground font-mono">${fmt(rec.currentSpend)}</span>
-                <span className="text-[10px] text-foreground/40 font-bold uppercase">/mo</span>
+                <span className="text-xl font-black text-slate-900 font-mono">${fmt(rec.currentSpend)}</span>
+                <span className="text-[10px] text-slate-700 font-bold uppercase">/mo</span>
               </div>
-              <p className="text-xs text-foreground/40 mt-1 font-medium">{rec.currentPlan}</p>
+              <p className="text-xs text-slate-700 mt-1 font-bold">{rec.currentPlan}</p>
             </div>
-            <div className="bg-primary/5 rounded-md p-5 border border-primary/10 shadow-sm shadow-primary/5">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-primary/60 mb-2">
+            <div className="bg-primary/5 rounded-md p-5 border border-primary/10 shadow-sm">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-primary mb-2">
                 Optimized
               </p>
               <div className="flex items-baseline gap-1">
                 <span className="text-xl font-black text-primary font-mono">${fmt(rec.recommendedSpend)}</span>
-                <span className="text-[10px] text-primary/40 font-bold uppercase">/mo</span>
+                <span className="text-[10px] text-primary/70 font-bold uppercase">/mo</span>
               </div>
-              <p className="text-xs text-primary/60 mt-1 font-medium truncate">{rec.recommendedPlan}</p>
+              <p className="text-xs text-primary font-bold truncate">{rec.recommendedPlan}</p>
             </div>
           </div>
 
-          <div className="flex items-start gap-3 text-sm text-foreground/60 leading-relaxed bg-background rounded-md p-5 border border-border shadow-sm">
+          <div className="flex items-start gap-4 text-sm bg-white rounded-md p-6 border border-slate-200 shadow-sm">
             <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
-            <div className="space-y-1">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-amber-600/60">Optimization Insight</p>
-              <p className="text-xs font-medium">{rec.reason}</p>
+            <div className="space-y-1.5">
+              <p className="text-[10px] font-black uppercase tracking-wider text-amber-600">Optimization Insight</p>
+              <p className="text-sm font-semibold text-slate-700 leading-relaxed">{rec.reason}</p>
             </div>
           </div>
         </div>
@@ -207,8 +207,8 @@ function LeadCaptureForm({ auditId }: { auditId: string | null }) {
           <BadgeCheck className="w-8 h-8 text-emerald-600" />
         </div>
         <div className="space-y-1">
-          <p className="font-black text-foreground text-lg">Report Dispatched!</p>
-          <p className="text-sm text-foreground/40 max-w-xs mx-auto font-medium">
+          <p className="font-black text-slate-900 text-lg">Report Dispatched!</p>
+          <p className="text-sm text-slate-600 max-w-xs mx-auto font-bold">
             We&apos;ve sent the implementation guide and full audit PDF to your inbox.
           </p>
         </div>
@@ -219,7 +219,7 @@ function LeadCaptureForm({ auditId }: { auditId: string | null }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="space-y-2">
-        <label htmlFor="lead-email" className="block text-[10px] font-bold uppercase tracking-wider text-foreground/40 px-1">
+        <label htmlFor="lead-email" className="block text-[10px] font-bold uppercase tracking-wider text-slate-700 px-1">
           Work Email
         </label>
         <input
@@ -229,12 +229,12 @@ function LeadCaptureForm({ auditId }: { auditId: string | null }) {
           placeholder="email@company.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full bg-background border border-border hover:border-primary/50 focus:border-primary focus:ring-1 focus:ring-primary rounded-md py-3.5 px-5 text-foreground placeholder-foreground/20 focus:outline-none transition text-sm font-medium shadow-sm"
+          className="w-full bg-background border border-slate-300 hover:border-primary/50 focus:border-primary focus:ring-1 focus:ring-primary rounded-md py-3.5 px-5 text-slate-900 placeholder-slate-400 focus:outline-none transition text-sm font-bold shadow-sm"
         />
       </div>
       <div className="space-y-2">
-        <label htmlFor="lead-company" className="block text-[10px] font-bold uppercase tracking-wider text-foreground/40 px-1">
-          Company <span className="text-foreground/20 italic font-normal">(optional)</span>
+        <label htmlFor="lead-company" className="block text-[10px] font-bold uppercase tracking-wider text-slate-700 px-1">
+          Company <span className="text-slate-400 italic font-normal">(optional)</span>
         </label>
         <input
           id="lead-company"
@@ -242,7 +242,7 @@ function LeadCaptureForm({ auditId }: { auditId: string | null }) {
           placeholder="e.g. Acme SaaS"
           value={company}
           onChange={(e) => setCompany(e.target.value)}
-          className="w-full bg-background border border-border hover:border-primary/50 focus:border-primary focus:ring-1 focus:ring-primary rounded-md py-3.5 px-5 text-foreground placeholder-foreground/20 focus:outline-none transition text-sm font-medium shadow-sm"
+          className="w-full bg-background border border-slate-300 hover:border-primary/50 focus:border-primary focus:ring-1 focus:ring-primary rounded-md py-3.5 px-5 text-slate-900 placeholder-slate-400 focus:outline-none transition text-sm font-bold shadow-sm"
         />
       </div>
 
@@ -294,8 +294,8 @@ export default function AuditReport({ auditId, auditResult, aiSummary }: AuditRe
             <div className="w-9 h-9 rounded-md bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
               <span className="font-black text-white text-xs tracking-tighter">CX</span>
             </div>
-            <span className="font-black text-foreground tracking-tight text-lg">
-              Credex <span className="text-foreground/30 font-bold ml-1">Audit</span>
+            <span className="font-black text-slate-900 tracking-tight text-lg">
+              Credex <span className="text-slate-400 font-bold ml-1">Audit</span>
             </span>
           </a>
           <div className="flex items-center gap-4">
@@ -316,12 +316,12 @@ export default function AuditReport({ auditId, auditResult, aiSummary }: AuditRe
         {/* Left Column: Summary & Tools */}
         <div className="lg:col-span-7 space-y-12">
           <div>
-            <div className="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/40 text-emerald-600 dark:text-emerald-400 px-4 py-1.5 rounded-md text-xs font-black tracking-wide mb-6">
+            <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-100 text-emerald-600 px-4 py-1.5 rounded-md text-xs font-black tracking-wide mb-6">
               <BadgeCheck className="w-4 h-4" />
               INTELLIGENCE ANALYSIS VERIFIED
             </div>
             
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.05] text-foreground">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.05] text-slate-900">
               {isAlreadyOptimal ? (
                 <>Your AI stack is <span className="text-primary italic">perfectly lean.</span></>
               ) : (
@@ -331,9 +331,9 @@ export default function AuditReport({ auditId, auditResult, aiSummary }: AuditRe
                 </>
               )}
             </h1>
-            <p className="mt-6 text-foreground/50 text-lg font-medium max-w-2xl leading-relaxed">
-              Based on your stack, you are currently overpaying by roughly <span className="text-foreground font-bold">{savingsPercent}%</span>.
-              Following these recommendations could recover <span className="text-emerald-500 font-bold">${fmt(totalAnnualSavings)}</span> annually.
+            <p className="mt-6 text-slate-700 text-lg font-bold max-w-2xl leading-relaxed">
+              Based on your stack, you are currently overpaying by roughly <span className="text-slate-900 font-black">{savingsPercent}%</span>.
+              Following these recommendations could recover <span className="text-emerald-500 font-black">${fmt(totalAnnualSavings)}</span> annually.
             </p>
           </div>
 
@@ -342,7 +342,7 @@ export default function AuditReport({ auditId, auditResult, aiSummary }: AuditRe
               {
                 label: 'Current Carry',
                 value: `$${fmt(totalCurrentSpend)}`,
-                icon: <TrendingUp className="w-4 h-4 text-foreground/40" />,
+                icon: <TrendingUp className="w-4 h-4 text-slate-500" />,
               },
               {
                 label: 'Ideal Cost',
@@ -362,21 +362,21 @@ export default function AuditReport({ auditId, auditResult, aiSummary }: AuditRe
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="bg-card border border-border rounded-md p-5 space-y-3 shadow-sm hover:shadow-md transition-shadow"
+                className="bg-white border border-slate-200 rounded-md p-5 space-y-3 shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="flex items-center gap-2">
                   {stat.icon}
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-foreground/40">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-600">
                     {stat.label}
                   </p>
                 </div>
-                <p className="text-2xl font-black text-foreground font-mono leading-none">{stat.value}</p>
+                <p className="text-2xl font-black text-slate-900 font-mono leading-none">{stat.value}</p>
               </div>
             ))}
           </div>
 
           <div className="space-y-6">
-            <h2 className="text-xl font-black text-foreground tracking-tight">
+            <h2 className="text-xl font-black text-slate-900 tracking-tight">
               Tool-by-Tool Breakdown
             </h2>
             <div className="space-y-3">
@@ -401,26 +401,26 @@ export default function AuditReport({ auditId, auditResult, aiSummary }: AuditRe
                   AI Analyst Insight
                 </p>
               </div>
-              <p className="text-foreground/70 text-sm font-medium leading-relaxed italic">
+              <p className="text-slate-800 text-sm font-bold leading-relaxed italic">
                 &quot;{aiSummary}&quot;
               </p>
             </div>
           )}
 
           {/* Lead Capture Panel */}
-          <div className="bg-card border border-border rounded-md p-8 shadow-xl shadow-slate-200/50 dark:shadow-none">
+          <div className="bg-card border border-border rounded-md p-8 shadow-xl shadow-slate-200/50">
             <div className="mb-8">
-              <h3 className="text-xl font-black text-foreground tracking-tight mb-2">
+              <h3 className="text-xl font-black text-slate-900 tracking-tight mb-2">
                 Download Savings Guide
               </h3>
-              <p className="text-foreground/40 text-sm font-medium leading-relaxed">
+              <p className="text-slate-600 text-sm font-bold leading-relaxed">
                 Receive the full implementation roadmap and vendor negotiation templates via email.
               </p>
             </div>
             <LeadCaptureForm auditId={auditId} />
             
             <div className="mt-8 pt-8 border-t border-border space-y-4">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-foreground/30 text-center">Included in the PDF</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 text-center">Included in the PDF</p>
               <ul className="grid grid-cols-2 gap-3">
                 {[
                   'Cancellation Templates',
@@ -428,7 +428,7 @@ export default function AuditReport({ auditId, auditResult, aiSummary }: AuditRe
                   'API Usage Benchmarks',
                   'Migration Checklists'
                 ].map((item) => (
-                  <li key={item} className="flex items-center gap-2 text-[11px] font-bold text-foreground/50">
+                  <li key={item} className="flex items-center gap-2 text-[11px] font-black text-slate-700">
                     <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
                     {item}
                   </li>
