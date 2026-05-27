@@ -1,4 +1,4 @@
-import { runAudit, buildAuditPromptText } from '../audit';
+import { runAudit, buildAuditPromptText } from '../lib/auditEngine';
 import { AuditInput } from '@/types';
 
 describe('Audit Engine — runAudit()', () => {
