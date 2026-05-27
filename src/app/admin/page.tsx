@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { TrendingDown, Users, Zap, DollarSign, RefreshCw, Lock } from 'lucide-react';
 
 interface AdminStats {
