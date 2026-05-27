@@ -41,10 +41,10 @@ export default function AuditPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4 text-zinc-400">
-          <Loader2 className="w-8 h-8 animate-spin text-violet-400" />
-          <p className="text-sm font-medium">Loading your audit report…</p>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4 text-foreground/40">
+          <Loader2 className="w-10 h-10 animate-spin text-primary" />
+          <p className="text-sm font-bold tracking-tight">Accessing Audit Intelligence…</p>
         </div>
       </div>
     );
@@ -52,18 +52,18 @@ export default function AuditPage() {
 
   if (error || !auditResult) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex items-center justify-center px-6">
-        <div className="max-w-md text-center space-y-4">
-          <div className="w-12 h-12 rounded-full bg-rose-500/10 border border-rose-500/20 flex items-center justify-center mx-auto">
-            <span className="text-rose-400 text-xl">!</span>
+      <div className="min-h-screen bg-background flex items-center justify-center px-6">
+        <div className="max-w-md w-full bg-card border border-border p-10 rounded-md text-center shadow-xl shadow-primary/5">
+          <div className="w-16 h-16 rounded-md bg-red-50 border border-red-100 flex items-center justify-center mx-auto mb-6">
+            <span className="text-red-500 text-2xl font-black">!</span>
           </div>
-          <h1 className="text-xl font-bold text-white">Audit Not Found</h1>
-          <p className="text-zinc-400 text-sm">{error ?? 'This audit report does not exist or may have expired.'}</p>
+          <h1 className="text-2xl font-black text-foreground mb-4">Report Unavailable</h1>
+          <p className="text-foreground/50 text-base font-medium mb-8 leading-relaxed">{error ?? 'This audit report does not exist or may have expired.'}</p>
           <a
             href="/"
-            className="inline-flex items-center gap-2 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-200 text-sm font-medium px-5 py-2.5 rounded-xl transition"
+            className="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white text-sm font-black px-6 py-4 rounded-md shadow-lg shadow-primary/20 transition-all duration-200"
           >
-            ← Run a new audit
+            ← Return to Dashboard
           </a>
         </div>
       </div>

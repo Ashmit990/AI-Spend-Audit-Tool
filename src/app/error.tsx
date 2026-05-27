@@ -16,36 +16,36 @@ export default function GlobalError({
 
   return (
     <html lang="en">
-      <body className="min-h-screen bg-zinc-950 flex items-center justify-center px-6 font-sans">
-        <div className="max-w-md w-full text-center space-y-6">
-          <div className="w-16 h-16 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center mx-auto">
-            <span className="text-rose-400 text-2xl font-bold">!</span>
+      <body className="min-h-screen bg-[#fcfdfe] text-slate-900 flex items-center justify-center px-6 font-sans">
+        <div className="max-w-md w-full text-center space-y-8">
+          <div className="w-20 h-20 rounded-md bg-red-50 border border-red-100 flex items-center justify-center mx-auto shadow-sm">
+            <span className="text-red-500 text-3xl font-black">!</span>
           </div>
 
-          <div className="space-y-2">
-            <h1 className="text-2xl font-bold text-white tracking-tight">
-              Something went wrong
+          <div className="space-y-3">
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+              System Interruption
             </h1>
-            <p className="text-zinc-400 text-sm leading-relaxed">
-              An unexpected error occurred. This has been logged and we&apos;re on it.
+            <p className="text-slate-500 font-medium leading-relaxed">
+              We encountered an unexpected error. The infrastructure has been notified.
             </p>
             {error.digest && (
-              <p className="text-zinc-600 text-xs font-mono">Error ID: {error.digest}</p>
+              <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest bg-slate-50 py-1 px-3 rounded-md inline-block">Error ID: {error.digest}</p>
             )}
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <button
               onClick={reset}
-              className="inline-flex items-center justify-center bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 text-sm"
+              className="inline-flex items-center justify-center bg-primary hover:bg-primary/90 text-white font-bold py-4 px-8 rounded-md shadow-lg shadow-primary/20 transition-all text-sm"
             >
               Try Again
             </button>
             <Link
               href="/"
-              className="inline-flex items-center justify-center bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-200 font-semibold py-3 px-6 rounded-xl transition text-sm"
+              className="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-600 hover:text-slate-900 font-bold py-4 px-8 rounded-md transition-all text-sm shadow-sm"
             >
-              Go Home
+              Back to Safety
             </Link>
           </div>
         </div>

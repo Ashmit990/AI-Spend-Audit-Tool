@@ -4,41 +4,30 @@ import Link from 'next/link';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-zinc-950 flex items-center justify-center px-6 font-sans">
-      {/* Ambient glows */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.07),transparent_60%)] pointer-events-none" />
-
-      <div className="max-w-md w-full text-center space-y-6">
-        {/* Number */}
+    <div className="min-h-screen bg-[#fcfdfe] text-slate-900 flex items-center justify-center px-6 font-sans">
+      <div className="max-w-md w-full text-center space-y-10">
         <div className="relative inline-block">
-          <span className="text-[9rem] font-extrabold text-zinc-900 select-none leading-none">
+          <span className="text-[9rem] font-black text-slate-50 select-none leading-none tracking-tighter">
             404
           </span>
-          <span className="absolute inset-0 flex items-center justify-center text-[9rem] font-extrabold bg-clip-text text-transparent bg-gradient-to-b from-zinc-600 to-zinc-800 select-none leading-none">
-            404
+          <span className="absolute inset-0 flex items-center justify-center text-7xl font-black text-slate-900 select-none leading-none tracking-tighter">
+            Lost
           </span>
         </div>
 
-        <div className="space-y-3">
-          <h1 className="text-2xl font-bold text-white tracking-tight">Page not found</h1>
-          <p className="text-zinc-400 text-sm leading-relaxed">
+        <div className="space-y-4">
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Page not found</h1>
+          <p className="text-slate-500 font-medium leading-relaxed">
             The page you&apos;re looking for doesn&apos;t exist or may have been moved.
-            If you had an audit link, it may have expired.
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
           <Link
             href="/"
-            className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-violet-950/40 transition-all duration-200 text-sm"
+            className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold py-3.5 px-8 rounded-md shadow-lg shadow-primary/20 transition-all text-sm"
           >
-            Run a New Audit
-          </Link>
-          <Link
-            href="/#how-it-works"
-            className="inline-flex items-center justify-center gap-2 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-200 font-semibold py-3 px-6 rounded-xl transition text-sm"
-          >
-            How It Works
+            Back to Home
           </Link>
         </div>
       </div>

@@ -8,7 +8,6 @@ import {
   CheckCircle,
   AlertTriangle,
   Zap,
-  ArrowRight,
   Mail,
   Loader2,
   BadgeCheck,
@@ -48,10 +47,10 @@ function ShareButton({ auditId }: { auditId: string | null }) {
   return (
     <button
       onClick={handleCopy}
-      className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl border transition-all duration-200 ${
+      className={`flex items-center gap-1.5 text-xs font-bold px-4 py-2.5 rounded-md border transition-all duration-200 ${
         copied
-          ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
-          : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-200'
+          ? 'bg-emerald-50 text-emerald-600 border-emerald-200 shadow-sm'
+          : 'bg-background border-border hover:border-primary/50 text-foreground/60 hover:text-primary shadow-sm'
       }`}
       title="Copy shareable link"
     >
@@ -85,67 +84,78 @@ function ToolRow({ rec }: { rec: ToolRecommendation }) {
   const hasSavings = rec.savings > 0;
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden transition-all duration-200 hover:border-zinc-700">
+    <div className="bg-card border border-border rounded-md overflow-hidden transition-all duration-300 hover:shadow-md">
       <button
         onClick={() => setExpanded((v) => !v)}
-        className="w-full flex items-center justify-between px-5 py-4 text-left"
+        className="w-full flex items-center justify-between px-6 py-5 text-left"
       >
         <div className="flex items-center gap-4">
           <div
-            className={`w-2 h-2 rounded-full flex-shrink-0 ${
+            className={`w-3 h-3 rounded-full flex-shrink-0 shadow-sm ${
               rec.savings > 50
-                ? 'bg-emerald-400'
+                ? 'bg-emerald-500 shadow-emerald-500/20'
                 : rec.savings > 0
-                ? 'bg-amber-400'
-                : 'bg-zinc-600'
+                ? 'bg-amber-500 shadow-amber-500/20'
+                : 'bg-slate-300 dark:bg-slate-700'
             }`}
           />
-          <span className="font-semibold text-white text-sm">{rec.name}</span>
-          <span className="text-xs text-zinc-500 font-mono bg-zinc-800 px-2 py-0.5 rounded-md">
-            {rec.currentPlan}
-          </span>
+          <div className="flex flex-col">
+            <span className="font-bold text-foreground text-sm leading-none mb-1">{rec.name}</span>
+            <span className="text-[10px] text-foreground/40 font-bold uppercase tracking-wider">
+              {rec.currentPlan}
+            </span>
+          </div>
         </div>
 
         <div className="flex items-center gap-4">
           {hasSavings ? (
-            <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg">
+            <span className="text-xs font-black text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/40 px-3 py-1.5 rounded-md">
               −${fmt(rec.savings)}/mo
             </span>
           ) : (
-            <span className="text-xs font-bold text-zinc-500 bg-zinc-800 px-2.5 py-1 rounded-lg">
-              Optimal
+            <span className="text-xs font-bold text-foreground/30 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 rounded-md">
+              No Waste
             </span>
           )}
           {expanded ? (
-            <ChevronUp className="w-4 h-4 text-zinc-500" />
+            <ChevronUp className="w-5 h-5 text-foreground/20" />
           ) : (
-            <ChevronDown className="w-4 h-4 text-zinc-500" />
+            <ChevronDown className="w-5 h-5 text-foreground/20" />
           )}
         </div>
       </button>
 
       {expanded && (
-        <div className="px-5 pb-5 border-t border-zinc-800 pt-4 space-y-4">
+        <div className="px-6 pb-6 border-t border-border pt-6 space-y-5 bg-slate-50/30 dark:bg-slate-900/10">
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-zinc-950 rounded-xl p-4 border border-zinc-800">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">
+            <div className="bg-background rounded-md p-5 border border-border shadow-sm">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-foreground/30 mb-2">
                 Current Spend
               </p>
-              <p className="text-xl font-bold text-white font-mono">${fmt(rec.currentSpend)}</p>
-              <p className="text-xs text-zinc-500 mt-0.5">{rec.currentPlan} plan/mo</p>
+              <div className="flex items-baseline gap-1">
+                <span className="text-xl font-black text-foreground font-mono">${fmt(rec.currentSpend)}</span>
+                <span className="text-[10px] text-foreground/40 font-bold uppercase">/mo</span>
+              </div>
+              <p className="text-xs text-foreground/40 mt-1 font-medium">{rec.currentPlan}</p>
             </div>
-            <div className="bg-emerald-500/5 rounded-xl p-4 border border-emerald-500/20">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 mb-1">
-                Recommended
+            <div className="bg-primary/5 rounded-md p-5 border border-primary/10 shadow-sm shadow-primary/5">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-primary/60 mb-2">
+                Optimized
               </p>
-              <p className="text-xl font-bold text-white font-mono">${fmt(rec.recommendedSpend)}</p>
-              <p className="text-xs text-emerald-400 mt-0.5 truncate">{rec.recommendedPlan}</p>
+              <div className="flex items-baseline gap-1">
+                <span className="text-xl font-black text-primary font-mono">${fmt(rec.recommendedSpend)}</span>
+                <span className="text-[10px] text-primary/40 font-bold uppercase">/mo</span>
+              </div>
+              <p className="text-xs text-primary/60 mt-1 font-medium truncate">{rec.recommendedPlan}</p>
             </div>
           </div>
 
-          <div className="flex items-start gap-2.5 text-sm text-zinc-400 leading-relaxed bg-zinc-950 rounded-xl p-4 border border-zinc-800">
-            <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
-            <p className="text-xs">{rec.reason}</p>
+          <div className="flex items-start gap-3 text-sm text-foreground/60 leading-relaxed bg-background rounded-md p-5 border border-border shadow-sm">
+            <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-amber-600/60">Optimization Insight</p>
+              <p className="text-xs font-medium">{rec.reason}</p>
+            </div>
           </div>
         </div>
       )}
@@ -192,65 +202,67 @@ function LeadCaptureForm({ auditId }: { auditId: string | null }) {
 
   if (submitted) {
     return (
-      <div className="flex flex-col items-center justify-center gap-3 py-8 text-center">
-        <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
-          <BadgeCheck className="w-6 h-6 text-emerald-400" />
+      <div className="flex flex-col items-center justify-center gap-4 py-10 text-center">
+        <div className="w-16 h-16 rounded-md bg-emerald-50 border border-emerald-100 flex items-center justify-center shadow-sm shadow-emerald-500/10">
+          <BadgeCheck className="w-8 h-8 text-emerald-600" />
         </div>
-        <p className="font-bold text-white">Report sent to your inbox!</p>
-        <p className="text-xs text-zinc-500 max-w-xs">
-          Check your email for the full interactive audit report and savings guide.
-        </p>
+        <div className="space-y-1">
+          <p className="font-black text-foreground text-lg">Report Dispatched!</p>
+          <p className="text-sm text-foreground/40 max-w-xs mx-auto font-medium">
+            We&apos;ve sent the implementation guide and full audit PDF to your inbox.
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label htmlFor="lead-email" className="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="space-y-2">
+        <label htmlFor="lead-email" className="block text-[10px] font-bold uppercase tracking-wider text-foreground/40 px-1">
           Work Email
         </label>
         <input
           id="lead-email"
           type="email"
           required
-          placeholder="you@company.com"
+          placeholder="email@company.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full bg-zinc-900 border border-zinc-800 hover:border-zinc-700 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 rounded-xl py-3 px-4 text-white placeholder-zinc-600 focus:outline-none transition text-sm"
+          className="w-full bg-background border border-border hover:border-primary/50 focus:border-primary focus:ring-1 focus:ring-primary rounded-md py-3.5 px-5 text-foreground placeholder-foreground/20 focus:outline-none transition text-sm font-medium shadow-sm"
         />
       </div>
-      <div>
-        <label htmlFor="lead-company" className="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">
-          Company Name <span className="text-zinc-600 font-normal normal-case">(optional)</span>
+      <div className="space-y-2">
+        <label htmlFor="lead-company" className="block text-[10px] font-bold uppercase tracking-wider text-foreground/40 px-1">
+          Company <span className="text-foreground/20 italic font-normal">(optional)</span>
         </label>
         <input
           id="lead-company"
           type="text"
-          placeholder="Acme Inc."
+          placeholder="e.g. Acme SaaS"
           value={company}
           onChange={(e) => setCompany(e.target.value)}
-          className="w-full bg-zinc-900 border border-zinc-800 hover:border-zinc-700 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 rounded-xl py-3 px-4 text-white placeholder-zinc-600 focus:outline-none transition text-sm"
+          className="w-full bg-background border border-border hover:border-primary/50 focus:border-primary focus:ring-1 focus:ring-primary rounded-md py-3.5 px-5 text-foreground placeholder-foreground/20 focus:outline-none transition text-sm font-medium shadow-sm"
         />
       </div>
 
       {error && (
-        <p className="text-xs text-rose-400 bg-rose-500/10 border border-rose-500/20 rounded-lg px-3 py-2">
+        <div className="p-4 bg-red-50 border border-red-100 rounded-md text-red-600 text-xs font-bold animate-pulse">
           {error}
-        </p>
+        </div>
       )}
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold py-3.5 px-6 rounded-xl shadow-lg shadow-violet-950/40 transition-all duration-200 disabled:opacity-60"
+        className="w-full flex items-center justify-center gap-3 bg-primary hover:bg-primary/95 text-white font-black py-4 px-6 rounded-md shadow-xl shadow-primary/20 hover:shadow-primary/30 active:scale-[0.98] transition-all duration-200 disabled:opacity-60"
       >
         {loading ? (
-          <Loader2 className="w-4 h-4 animate-spin" />
+          <Loader2 className="w-5 h-5 animate-spin" />
         ) : (
           <>
-            <Mail className="w-4 h-4" />
-            Email Me the Full Report
+            <Mail className="w-5 h-5" />
+            Send PDF Implementation Guide
           </>
         )}
       </button>
@@ -262,193 +274,169 @@ function LeadCaptureForm({ auditId }: { auditId: string | null }) {
 // Main Report Component
 // ---------------------------------------------------------------------------
 export default function AuditReport({ auditId, auditResult, aiSummary }: AuditReportProps) {
-  const { totalCurrentSpend, totalRecommendedSpend, totalMonthlySavings, totalAnnualSavings, tools, isAlreadyOptimal, showCredexUpsell } = auditResult;
+  const { totalCurrentSpend, totalRecommendedSpend, totalMonthlySavings, totalAnnualSavings, tools, isAlreadyOptimal } = auditResult;
 
   const savingsPercent =
     totalCurrentSpend > 0 ? Math.round((totalMonthlySavings / totalCurrentSpend) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans">
-      {/* Ambient glows */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,0.06),transparent_60%)] pointer-events-none -z-10" />
-      <div className="fixed bottom-0 right-0 w-[600px] h-[500px] bg-[radial-gradient(circle_at_bottom_right,rgba(16,185,129,0.04),transparent_70%)] pointer-events-none -z-10" />
+    <div className="min-h-screen bg-background text-foreground font-sans relative">
+      <div className="absolute inset-0 bg-grid-pattern pointer-events-none -z-10" />
+      
+      {/* Dynamic Background Gradients */}
+      <div className="fixed top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] -z-20 pointer-events-none translate-x-1/4 -translate-y-1/4" />
+      <div className="fixed bottom-0 left-0 w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[100px] -z-20 pointer-events-none -translate-x-1/4 translate-y-1/4" />
 
-      {/* Navbar */}
-      <header className="border-b border-zinc-900 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+      {/* Modern Navbar */}
+      <header className="border-b border-border bg-background/80 backdrop-blur-lg sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <a href="/" className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center">
-              <span className="font-extrabold text-white text-xs">CX</span>
+            <div className="w-9 h-9 rounded-md bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
+              <span className="font-black text-white text-xs tracking-tighter">CX</span>
             </div>
-            <span className="font-bold text-white tracking-tight text-base">
-              Credex <span className="text-zinc-500 text-sm font-normal">Spend Audit</span>
+            <span className="font-black text-foreground tracking-tight text-lg">
+              Credex <span className="text-foreground/30 font-bold ml-1">Audit</span>
             </span>
           </a>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <ShareButton auditId={auditId} />
+            <div className="w-px h-6 bg-border mx-2" />
             <a
               href="/"
-              className="text-xs text-zinc-400 hover:text-white transition font-medium flex items-center gap-1.5"
+              className="text-xs text-primary font-black hover:underline transition"
             >
-              ← New Audit
+              New Audit
             </a>
           </div>
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-6 py-12 space-y-10">
+      <main className="max-w-6xl mx-auto px-6 py-16 lg:py-24 grid lg:grid-cols-12 gap-12 items-start relative z-10">
 
-        {/* Hero Summary Numbers */}
-        <section>
-          <div className="mb-6">
-            <div className="inline-flex items-center gap-2 bg-zinc-900 border border-zinc-800 text-zinc-300 px-3 py-1.5 rounded-full text-xs font-semibold mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Audit Complete
+        {/* Left Column: Summary & Tools */}
+        <div className="lg:col-span-7 space-y-12">
+          <div>
+            <div className="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/40 text-emerald-600 dark:text-emerald-400 px-4 py-1.5 rounded-md text-xs font-black tracking-wide mb-6">
+              <BadgeCheck className="w-4 h-4" />
+              INTELLIGENCE ANALYSIS VERIFIED
             </div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+            
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.05] text-foreground">
               {isAlreadyOptimal ? (
-                <>Your stack is already well-optimized 🎯</>
+                <>Your AI stack is <span className="text-primary italic">perfectly lean.</span></>
               ) : (
                 <>
-                  You could save{' '}
-                  <span className="text-emerald-400">${fmt(totalMonthlySavings)}/mo</span>
-                  <br />
-                  <span className="text-zinc-400 text-2xl font-bold">
-                    (${fmt(totalAnnualSavings)} annually)
-                  </span>
+                  We found <span className="text-emerald-500 italic">${fmt(totalMonthlySavings)}</span> <br />
+                  in monthly waste.
                 </>
               )}
             </h1>
+            <p className="mt-6 text-foreground/50 text-lg font-medium max-w-2xl leading-relaxed">
+              Based on your stack, you are currently overpaying by roughly <span className="text-foreground font-bold">{savingsPercent}%</span>.
+              Following these recommendations could recover <span className="text-emerald-500 font-bold">${fmt(totalAnnualSavings)}</span> annually.
+            </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
               {
-                label: 'Current Monthly Spend',
+                label: 'Current Carry',
                 value: `$${fmt(totalCurrentSpend)}`,
-                icon: <TrendingUp className="w-4 h-4 text-zinc-400" />,
-                accent: 'zinc',
+                icon: <TrendingUp className="w-4 h-4 text-foreground/40" />,
               },
               {
-                label: 'Optimized Monthly Cost',
+                label: 'Ideal Cost',
                 value: `$${fmt(totalRecommendedSpend)}`,
-                icon: <TrendingDown className="w-4 h-4 text-emerald-400" />,
-                accent: 'emerald',
+                icon: <TrendingDown className="w-4 h-4 text-primary" />,
               },
               {
-                label: 'Monthly Savings',
+                label: 'Monthly Gain',
                 value: `$${fmt(totalMonthlySavings)}`,
-                icon: <Zap className="w-4 h-4 text-violet-400" />,
-                accent: 'violet',
+                icon: <Zap className="w-4 h-4 text-emerald-500" />,
               },
               {
-                label: 'Potential Savings %',
+                label: 'Waste Ratio',
                 value: `${savingsPercent}%`,
-                icon: <CheckCircle className="w-4 h-4 text-indigo-400" />,
-                accent: 'indigo',
+                icon: <AlertTriangle className="w-4 h-4 text-amber-500" />,
               },
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-3"
+                className="bg-card border border-border rounded-md p-5 space-y-3 shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="flex items-center gap-2">
                   {stat.icon}
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-foreground/40">
                     {stat.label}
                   </p>
                 </div>
-                <p className="text-2xl font-extrabold text-white font-mono">{stat.value}</p>
+                <p className="text-2xl font-black text-foreground font-mono leading-none">{stat.value}</p>
               </div>
             ))}
           </div>
-        </section>
 
-        {/* AI Summary */}
-        {aiSummary && (
-          <section className="bg-gradient-to-br from-zinc-900 to-zinc-900/60 border border-violet-500/20 rounded-2xl p-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-48 h-48 bg-violet-500/5 rounded-full blur-3xl pointer-events-none" />
-            <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-7 h-7 rounded-lg bg-violet-500/10 border border-violet-500/20 flex items-center justify-center">
-                <Zap className="w-3.5 h-3.5 text-violet-400" />
-              </div>
-              <p className="text-xs font-bold uppercase tracking-wider text-violet-400">
-                AI Analyst Summary
-              </p>
+          <div className="space-y-6">
+            <h2 className="text-xl font-black text-foreground tracking-tight">
+              Tool-by-Tool Breakdown
+            </h2>
+            <div className="space-y-3">
+              {tools.map((rec) => (
+                <ToolRow key={rec.name} rec={rec} />
+              ))}
             </div>
-            <p className="text-zinc-300 text-sm leading-relaxed">{aiSummary}</p>
-          </section>
-        )}
-
-        {/* Per-tool breakdown */}
-        <section>
-          <h2 className="text-xl font-bold text-white tracking-tight mb-5">
-            Tool-by-Tool Breakdown
-          </h2>
-          <div className="space-y-3">
-            {tools.map((rec) => (
-              <ToolRow key={rec.name} rec={rec} />
-            ))}
           </div>
-        </section>
+        </div>
 
-        {/* Credex Upsell / Lead Capture */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Upsell panel */}
-          {showCredexUpsell && (
-            <div className="bg-gradient-to-br from-violet-900/20 to-indigo-900/10 border border-violet-500/25 rounded-2xl p-7 flex flex-col gap-5">
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-7 h-7 rounded-lg bg-violet-500/10 border border-violet-500/20 flex items-center justify-center">
-                    <Zap className="w-3.5 h-3.5 text-violet-400" />
-                  </div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-violet-400">
-                    Credex Advantage
-                  </p>
+        {/* Right Column: AI Summary & Lead Capture */}
+        <div className="lg:col-span-5 space-y-8 lg:sticky lg:top-24">
+          {/* AI Summary Card */}
+          {aiSummary && (
+            <div className="bg-primary/5 border border-primary/10 rounded-md p-8 relative overflow-hidden shadow-sm shadow-primary/5">
+              <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+              <div className="flex items-center gap-2.5 mb-6">
+                <div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center border border-primary/20">
+                  <Zap className="w-4 h-4 text-primary" />
                 </div>
-                <h3 className="text-lg font-bold text-white tracking-tight mb-2">
-                  Unlock even deeper savings
-                </h3>
-                <p className="text-zinc-400 text-sm leading-relaxed">
-                  Credex consolidates your API billing and negotiates enterprise credit bundles at
-                  bulk rates — typically saving startups an additional 15–20% on top of plan
-                  optimizations.
+                <p className="text-xs font-black uppercase tracking-widest text-primary">
+                  AI Analyst Insight
                 </p>
               </div>
-              <ul className="space-y-2.5">
+              <p className="text-foreground/70 text-sm font-medium leading-relaxed italic">
+                &quot;{aiSummary}&quot;
+              </p>
+            </div>
+          )}
+
+          {/* Lead Capture Panel */}
+          <div className="bg-card border border-border rounded-md p-8 shadow-xl shadow-slate-200/50 dark:shadow-none">
+            <div className="mb-8">
+              <h3 className="text-xl font-black text-foreground tracking-tight mb-2">
+                Download Savings Guide
+              </h3>
+              <p className="text-foreground/40 text-sm font-medium leading-relaxed">
+                Receive the full implementation roadmap and vendor negotiation templates via email.
+              </p>
+            </div>
+            <LeadCaptureForm auditId={auditId} />
+            
+            <div className="mt-8 pt-8 border-t border-border space-y-4">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-foreground/30 text-center">Included in the PDF</p>
+              <ul className="grid grid-cols-2 gap-3">
                 {[
-                  'Pre-purchased bulk API credits at wholesale pricing',
-                  'Unified billing dashboard across all tools',
-                  'Expert license right-sizing consultation',
+                  'Cancellation Templates',
+                  'Seat Clean-up Guide',
+                  'API Usage Benchmarks',
+                  'Migration Checklists'
                 ].map((item) => (
-                  <li key={item} className="flex items-center gap-2.5 text-xs text-zinc-300">
-                    <CheckCircle className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <li key={item} className="flex items-center gap-2 text-[11px] font-bold text-foreground/50">
+                    <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
                     {item}
                   </li>
                 ))}
               </ul>
-              <a
-                href="mailto:hello@credex.com"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-violet-300 hover:text-violet-200 transition"
-              >
-                Talk to a Credex advisor <ArrowRight className="w-3.5 h-3.5" />
-              </a>
             </div>
-          )}
-
-          {/* Lead capture card */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-7">
-            <div className="mb-5">
-              <h3 className="text-lg font-bold text-white tracking-tight mb-1.5">
-                Get the Full Report
-              </h3>
-              <p className="text-zinc-400 text-sm leading-relaxed">
-                Receive a detailed savings breakdown with actionable steps straight to your inbox.
-              </p>
-            </div>
-            <LeadCaptureForm auditId={auditId} />
           </div>
-        </section>
+        </div>
       </main>
     </div>
   );
