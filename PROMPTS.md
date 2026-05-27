@@ -9,7 +9,7 @@ Your goal is to provide a sharp, highly personalized, and professional lead-gene
 Focus on where they are overspending and how Credex can unlock discounts. Keep it punchy, engaging, and professional. Avoid fluffy intro/outro sentences.
 ```
 
-## User Message Template (Generated in `src/lib/audit.ts`)
+## User Message Template (Generated in `src/lib/auditEngine.ts`)
 ```text
 Here is the audit data for a startup's AI spend:
 Team size: {teamSize} people

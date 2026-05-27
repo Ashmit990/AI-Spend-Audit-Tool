@@ -91,14 +91,16 @@ src/
 │   ├── SpendForm.tsx             # Interactive tool config form
 │   └── AuditReport.tsx           # Full audit report UI
 ├── lib/
-│   ├── audit.ts                  # Core audit processing engine
+│   ├── auditEngine.ts            # Core audit processing engine
 │   ├── pricing.ts                # Pricing catalog for all 8 tools
 │   ├── anthropic.ts              # Anthropic Claude wrapper
 │   ├── supabase.ts               # Supabase client setup
 │   ├── resend.ts                 # Resend email wrapper
 │   └── __tests__/
 │       ├── pricing.test.ts       # Pricing constant tests
-│       └── audit.test.ts         # Audit engine tests
+│       └── validate.test.ts      # Validation logic tests
+├── __tests__/
+│   └── auditEngine.test.ts       # Audit engine core tests
 └── types/
     └── index.ts                  # TypeScript interfaces
 supabase/

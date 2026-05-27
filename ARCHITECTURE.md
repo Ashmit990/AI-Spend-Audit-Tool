@@ -31,7 +31,7 @@ graph TD
 1.  **Input Collection:** Users input their tool stack into a React form. State is persisted in `localStorage` to prevent data loss on refresh.
 2.  **Audit Execution:**
     *   Client sends payload to `/api/audit`.
-    *   **Audit Engine:** A deterministic pure-function library (`src/lib/audit.ts`) calculates savings based on team size vs plans.
+    *   **Audit Engine:** A deterministic pure-function library (`src/lib/auditEngine.ts`) calculates savings based on team size vs plans.
     *   **AI Synthesis:** If configured, the Anthropic API generates a personalized summary paragraph.
     *   **Persistence:** The audit result is stored in Supabase under a unique UUID.
 3.  **Lead Capture:**
