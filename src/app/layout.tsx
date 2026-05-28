@@ -13,7 +13,9 @@ const geistMono = localFont({
   weight: '100 900',
 });
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://ai-spend-audit-tool.vercel.app';
+const rawUrl = process.env.NEXT_PUBLIC_APP_URL;
+const DEFAULT_URL = 'https://ai-spend-audit-tool.vercel.app';
+const APP_URL = rawUrl ? (rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`) : DEFAULT_URL;
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),

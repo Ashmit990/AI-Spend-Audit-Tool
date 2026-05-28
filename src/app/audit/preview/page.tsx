@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import AuditReport from '@/components/AuditReport';
 import { AuditResult } from '@/types';
-import { Loader2 } from 'lucide-react';
 
 export default function AuditPreviewPage() {
   const [auditResult, setAuditResult] = useState<AuditResult | null>(null);

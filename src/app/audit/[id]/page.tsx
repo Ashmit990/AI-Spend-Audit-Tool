@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import AuditReport from '@/components/AuditReport';
 import Footer from '@/components/Footer';
 import { AuditResult } from '@/types';
-import { Loader2, Zap } from 'lucide-react';
+import { Zap } from 'lucide-react';
 
 export default function AuditPage() {
   const params = useParams();

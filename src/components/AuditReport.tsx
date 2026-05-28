@@ -4,15 +4,11 @@ import React, { useState } from 'react';
 import { AuditResult, ToolRecommendation } from '@/types';
 import {
   TrendingDown,
-  TrendingUp,
   CheckCircle,
-  AlertTriangle,
   Zap,
-  Mail,
   Loader2,
   BadgeCheck,
   ChevronDown,
-  ChevronUp,
   Copy,
   Check,
   ArrowRight,
@@ -189,7 +185,7 @@ function ToolRow({ rec }: { rec: ToolRecommendation }) {
                       !
                     </div>
                     <p className="text-slate-600 font-medium leading-relaxed italic">
-                      "{rec.reason}"
+                      &quot;{rec.reason}&quot;
                     </p>
                   </div>
                 </div>
@@ -386,7 +382,7 @@ export default function AuditReport({ auditId, auditResult, aiSummary }: AuditRe
           <div className="space-y-4">
             <h3 className="text-3xl md:text-5xl font-black tracking-tighter text-slate-900">Get the full playbook.</h3>
             <p className="text-slate-500 font-medium text-lg leading-relaxed">
-              We'll send you a detailed CSV with specific migration steps, coupon codes for alternatives, and a negotiation template for Enterprise plans.
+              We&apos;ll send you a detailed CSV with specific migration steps, coupon codes for alternatives, and a negotiation template for Enterprise plans.
             </p>
           </div>
 

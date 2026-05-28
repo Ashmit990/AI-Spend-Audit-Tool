@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, ArrowRight, Calculator, Layers, Info, Sparkles, Loader2 } from 'lucide-react';
+import { Plus, Trash2, ArrowRight, Layers, Info, Sparkles, Loader2 } from 'lucide-react';
 import { AuditInput, ToolInput, ToolName } from '@/types';
 import { TOOL_PRICING } from '@/lib/pricing';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -166,8 +166,7 @@ export default function SpendForm({ onSubmit }: SpendFormProps) {
     onSubmit({
       teamSize,
       useCase,
-      tools,
-      email: '' // Handled by API
+      tools
     });
   };
 

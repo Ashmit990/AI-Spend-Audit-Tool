@@ -6,12 +6,8 @@ import SpendForm from '@/components/SpendForm';
 import Footer from '@/components/Footer';
 import {
   ShieldCheck,
-  Layers,
   TrendingDown,
-  ArrowRight,
-  Loader2,
   Calculator,
-  Mail,
   Zap,
   Sparkles,
   Search,
@@ -228,7 +224,7 @@ export default function Home() {
                   <span className="text-slate-300">Efficiency Era.</span>
                 </h3>
                 <p className="text-lg text-slate-500 font-medium leading-relaxed">
-                  We don't just guess. Credex cross-references your seat counts against the industry's largest database of startup SaaS contracts.
+                  We don&apos;t just guess. Credex cross-references your seat counts against the industry&apos;s largest database of startup SaaS contracts.
                 </p>
                 <div className="space-y-4">
                   {[
