@@ -3,33 +3,79 @@
 @tailwind utilities;
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --primary: #2563eb;
+  --background: #fdfdfe;
+  --foreground: #020617;
+  --primary: #0f172a;
   --primary-foreground: #ffffff;
   --card: #ffffff;
-  --card-foreground: #0f172a;
+  --card-foreground: #020617;
   --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #3b82f6;
-  --radius: 0.375rem;
+  --input: #f1f5f9;
+  --ring: #94a3b8;
+  --radius: 0.75rem;
 }
 
-html,
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  height: 100%;
 }
 
-body {
-  min-height: 100vh;
+@layer components {
+  .border-md {
+    @apply border-2 border-slate-200;
+  }
+
+  .premium-card {
+    @apply bg-white border-md rounded-2xl overflow-hidden backdrop-blur-xl shadow-premium;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(252, 253, 255, 1) 100%);
+  }
+  
+  .glass-panel {
+    @apply bg-white/70 border-md backdrop-blur-2xl rounded-[2rem] shadow-premium;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 100%);
+  }
+
+  .premium-dark {
+    @apply bg-slate-900 text-white rounded-[2rem] shadow-2xl overflow-hidden border-2 border-white/10;
+    background: radial-gradient(circle at top right, #1e293b, #020617);
+  }
+
+  .btn-primary {
+    @apply bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 px-8 rounded-xl transition-all active:scale-[0.97] shadow-lg shadow-slate-200 hover:shadow-xl hover:-translate-y-0.5 border-2 border-slate-900;
+  }
+
+  .btn-secondary {
+    @apply bg-white hover:bg-slate-50 text-slate-900 border-md font-bold py-4 px-8 rounded-xl transition-all active:scale-[0.97] shadow-sm hover:border-slate-300;
+  }
+
+  .badge-emerald {
+    @apply bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border-md border-emerald-100;
+  }
+
+  .badge-slate {
+    @apply bg-slate-50 text-slate-500 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border-md border-slate-100;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .shadow-premium {
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05), 0 4px 10px -5px rgba(0, 0, 0, 0.02);
+  }
+  .shadow-premium-hover {
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08), 0 8px 16px -8px rgba(0, 0, 0, 0.03);
   }
 }

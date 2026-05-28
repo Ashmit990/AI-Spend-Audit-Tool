@@ -15,7 +15,11 @@ import {
   ChevronUp,
   Copy,
   Check,
+  ArrowRight,
+  ShieldCheck,
+  Star,
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // ---------------------------------------------------------------------------
 // Share Button
@@ -32,7 +36,6 @@ function ShareButton({ auditId }: { auditId: string | null }) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Fallback for browsers without clipboard API
       const ta = document.createElement('textarea');
       ta.value = url;
       document.body.appendChild(ta);
@@ -47,10 +50,10 @@ function ShareButton({ auditId }: { auditId: string | null }) {
   return (
     <button
       onClick={handleCopy}
-      className={`flex items-center gap-1.5 text-xs font-bold px-4 py-2.5 rounded-md border transition-all duration-200 ${
+      className={`flex items-center gap-1.5 text-xs font-bold px-4 py-2.5 rounded-lg border transition-all duration-200 ${
         copied
           ? 'bg-emerald-50 text-emerald-600 border-emerald-200 shadow-sm'
-          : 'bg-background border-border hover:border-primary/50 text-slate-700 hover:text-primary shadow-sm'
+          : 'bg-white border-slate-200 hover:border-slate-900 text-slate-700 hover:text-slate-900 shadow-sm active:scale-95'
       }`}
       title="Copy shareable link"
     >
@@ -69,10 +72,8 @@ interface AuditReportProps {
   aiSummary: string;
 }
 
-// ---------------------------------------------------------------------------
-// Helper
-// ---------------------------------------------------------------------------
-function fmt(n: number) {
+function fmt(n: number | undefined | null) {
+  if (typeof n !== 'number') return '0';
   return n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }
 
@@ -84,360 +85,366 @@ function ToolRow({ rec }: { rec: ToolRecommendation }) {
   const hasSavings = rec.savings > 0;
 
   return (
-    <div className="bg-card border border-border rounded-md overflow-hidden transition-all duration-300 hover:shadow-md">
+    <motion.div 
+      layout
+      className="premium-card group transition-all duration-500 hover:shadow-premium-hover border-2 border-slate-200"
+    >
       <button
         onClick={() => setExpanded((v) => !v)}
-        className="w-full flex items-center justify-between px-6 py-5 text-left"
+        className="w-full flex items-center justify-between px-8 py-8 text-left"
       >
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
           <div
-            className={`w-3 h-3 rounded-full flex-shrink-0 shadow-sm ${
+            className={`w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-500 group-hover:scale-110 ${
               rec.savings > 50
-                ? 'bg-emerald-500 shadow-emerald-500/20'
+                ? 'bg-emerald-50 text-emerald-600'
                 : rec.savings > 0
-                ? 'bg-amber-500 shadow-amber-500/20'
-                : 'bg-slate-400'
+                ? 'bg-amber-50 text-amber-600'
+                : 'bg-slate-50 text-slate-400'
             }`}
-          />
+          >
+            {rec.savings > 0 ? <TrendingDown className="w-6 h-6" /> : <ShieldCheck className="w-6 h-6" />}
+          </div>
           <div className="flex flex-col">
-            <span className="font-bold text-slate-900 text-sm leading-none mb-1">{rec.name}</span>
-            <span className="text-[10px] text-slate-700 font-bold uppercase tracking-wider">
-              {rec.currentPlan}
-            </span>
+            <span className="font-black text-slate-900 text-lg leading-tight mb-1 group-hover:text-primary transition-colors">{rec.name}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] text-slate-400 font-black uppercase tracking-[0.15em] leading-none">
+                {rec.currentPlan}
+              </span>
+              <div className="w-1 h-1 rounded-full bg-slate-200" />
+              <span className="text-[10px] text-slate-400 font-black uppercase tracking-[0.15em] leading-none">
+                Active
+              </span>
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-10">
           {hasSavings ? (
-            <span className="text-xs font-black text-emerald-600 bg-emerald-50 border border-emerald-100 px-3 py-1.5 rounded-md">
-              −${fmt(rec.savings)}/mo
-            </span>
+            <div className="text-right">
+              <span className="block text-lg font-black text-emerald-600 tabular-nums">
+                −${fmt(rec.savings)}
+              </span>
+              <span className="block text-[9px] font-black text-emerald-500/60 uppercase tracking-widest mt-0.5">monthly saving</span>
+            </div>
           ) : (
-            <span className="text-xs font-bold text-slate-600 bg-slate-50 px-3 py-1.5 rounded-md border border-slate-100">
-              No Waste
-            </span>
+            <div className="flex items-center gap-2 bg-slate-50 px-4 py-2 rounded-xl border border-slate-100">
+              <CheckCircle className="w-3.5 h-3.5 text-slate-400" />
+              <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                Optimized
+              </span>
+            </div>
           )}
-          {expanded ? (
-            <ChevronUp className="w-5 h-5 text-slate-400" />
-          ) : (
-            <ChevronDown className="w-5 h-5 text-slate-400" />
-          )}
+          <div className={`w-8 h-8 rounded-full border border-slate-100 flex items-center justify-center transition-all duration-300 ${expanded ? 'rotate-180 bg-slate-900 border-slate-900 text-white shadow-lg' : 'text-slate-300 hover:text-slate-900'}`}>
+            <ChevronDown className="w-4 h-4" />
+          </div>
         </div>
       </button>
 
-      {expanded && (
-        <div className="px-6 pb-6 border-t border-slate-100 pt-6 space-y-5 bg-slate-50/50">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white rounded-md p-5 border border-slate-200 shadow-sm">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-600 mb-2">
-                Current Spend
-              </p>
-              <div className="flex items-baseline gap-1">
-                <span className="text-xl font-black text-slate-900 font-mono">${fmt(rec.currentSpend)}</span>
-                <span className="text-[10px] text-slate-700 font-bold uppercase">/mo</span>
+      <AnimatePresence>
+        {expanded && (
+          <motion.div 
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden border-t border-slate-50 bg-slate-50/20"
+          >
+            <div className="p-8 md:p-10 space-y-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="bg-white rounded-2xl p-6 border-2 border-slate-200 shadow-sm transition-transform hover:scale-[1.02]">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+                    <span className="w-1 h-3 bg-slate-200 rounded-full" />
+                    Current Expenditure
+                  </p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-black text-slate-900 tabular-nums">${fmt(rec.currentSpend)}</span>
+                    <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">USD / Month</span>
+                  </div>
+                </div>
+                <div className="bg-slate-950 rounded-2xl p-6 border-2 border-slate-800 shadow-xl transition-transform hover:scale-[1.02]">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-4 flex items-center gap-2">
+                    <span className="w-1 h-3 bg-amber-500 rounded-full" />
+                    Target Recommendation
+                  </p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-black text-white tabular-nums">${fmt(rec.recommendedSpend)}</span>
+                    <span className="text-[11px] text-slate-500 font-bold uppercase tracking-wider">USD / Month</span>
+                  </div>
+                </div>
               </div>
-              <p className="text-xs text-slate-700 mt-1 font-bold">{rec.currentPlan}</p>
-            </div>
-            <div className="bg-primary/5 rounded-md p-5 border border-primary/10 shadow-sm">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-primary mb-2">
-                Optimized
-              </p>
-              <div className="flex items-baseline gap-1">
-                <span className="text-xl font-black text-primary font-mono">${fmt(rec.recommendedSpend)}</span>
-                <span className="text-[10px] text-primary/70 font-bold uppercase">/mo</span>
-              </div>
-              <p className="text-xs text-primary font-bold truncate">{rec.recommendedPlan}</p>
-            </div>
-          </div>
 
-          <div className="flex items-start gap-4 text-sm bg-white rounded-md p-6 border border-slate-200 shadow-sm">
-            <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
-            <div className="space-y-1.5">
-              <p className="text-[10px] font-black uppercase tracking-wider text-amber-600">Optimization Insight</p>
-              <p className="text-sm font-semibold text-slate-700 leading-relaxed">{rec.reason}</p>
+              <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <div className="h-px flex-grow bg-slate-100" />
+                  <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2 whitespace-nowrap">
+                    <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                    Strategic Rationale
+                  </h4>
+                  <div className="h-px flex-grow bg-slate-100" />
+                </div>
+                
+                <div className="bg-white/40 border-2 border-slate-200 rounded-2xl p-6">
+                  <div className="flex gap-4">
+                    <div className="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center flex-shrink-0 text-xs font-black">
+                      !
+                    </div>
+                    <p className="text-slate-600 font-medium leading-relaxed italic">
+                      "{rec.reason}"
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="pt-4">
+                <div className="bg-white rounded-2xl p-4 border-2 border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Recommended Plan</span>
+                      <span className="text-sm font-black text-slate-900">{rec.recommendedPlan}</span>
+                    </div>
+                  </div>
+                  <button className="w-full sm:w-auto btn-primary py-3 px-6 text-[11px] uppercase tracking-widest shadow-none hover:shadow-lg">Apply Optimization</button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
-    </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }
 
-// ---------------------------------------------------------------------------
-// Lead Capture Form
-// ---------------------------------------------------------------------------
-function LeadCaptureForm({ auditId }: { auditId: string | null }) {
-  const [email, setEmail] = useState('');
-  const [company, setCompany] = useState('');
-  const [loading, setLoading] = useState(false);
+export default function AuditReport({ auditId, auditResult, aiSummary }: AuditReportProps) {
+  const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const isOptimized = auditResult.totalMonthlySavings === 0;
+
+  const handleSendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!email) return;
-
-    setLoading(true);
-    setError(null);
+    setSubmitting(true);
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email');
 
     try {
       const res = await fetch('/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, companyName: company, auditId }),
+        body: JSON.stringify({
+          email,
+          auditId,
+          tools: auditResult.tools.map((r) => r.name),
+          totalSavings: auditResult.totalMonthlySavings,
+        }),
       });
-      const json = await res.json();
-
-      if (!res.ok) {
-        setError(json.error || 'Something went wrong.');
-      } else {
+      if (res.ok) {
         setSubmitted(true);
       }
-    } catch {
-      setError('Network error. Please try again.');
+    } catch (err) {
+      console.error(err);
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
-  if (submitted) {
-    return (
-      <div className="flex flex-col items-center justify-center gap-4 py-10 text-center">
-        <div className="w-16 h-16 rounded-md bg-emerald-50 border border-emerald-100 flex items-center justify-center shadow-sm shadow-emerald-500/10">
-          <BadgeCheck className="w-8 h-8 text-emerald-600" />
-        </div>
-        <div className="space-y-1">
-          <p className="font-black text-slate-900 text-lg">Report Dispatched!</p>
-          <p className="text-sm text-slate-600 max-w-xs mx-auto font-bold">
-            We&apos;ve sent the implementation guide and full audit PDF to your inbox.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <div className="space-y-2">
-        <label htmlFor="lead-email" className="block text-[10px] font-bold uppercase tracking-wider text-slate-700 px-1">
-          Work Email
-        </label>
-        <input
-          id="lead-email"
-          type="email"
-          required
-          placeholder="email@company.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full bg-background border border-slate-300 hover:border-primary/50 focus:border-primary focus:ring-1 focus:ring-primary rounded-md py-3.5 px-5 text-slate-900 placeholder-slate-400 focus:outline-none transition text-sm font-bold shadow-sm"
-        />
-      </div>
-      <div className="space-y-2">
-        <label htmlFor="lead-company" className="block text-[10px] font-bold uppercase tracking-wider text-slate-700 px-1">
-          Company <span className="text-slate-400 italic font-normal">(optional)</span>
-        </label>
-        <input
-          id="lead-company"
-          type="text"
-          placeholder="e.g. Acme SaaS"
-          value={company}
-          onChange={(e) => setCompany(e.target.value)}
-          className="w-full bg-background border border-slate-300 hover:border-primary/50 focus:border-primary focus:ring-1 focus:ring-primary rounded-md py-3.5 px-5 text-slate-900 placeholder-slate-400 focus:outline-none transition text-sm font-bold shadow-sm"
-        />
-      </div>
-
-      {error && (
-        <div className="p-4 bg-red-50 border border-red-100 rounded-md text-red-600 text-xs font-bold animate-pulse">
-          {error}
-        </div>
-      )}
-
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full flex items-center justify-center gap-3 bg-primary hover:bg-primary/95 text-white font-black py-4 px-6 rounded-md shadow-xl shadow-primary/20 hover:shadow-primary/30 active:scale-[0.98] transition-all duration-200 disabled:opacity-60"
+    <div className="max-w-4xl mx-auto space-y-8 pb-32">
+      {/* Result Header Card */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="glass-panel p-8 sm:p-14 relative overflow-hidden"
       >
-        {loading ? (
-          <Loader2 className="w-5 h-5 animate-spin" />
-        ) : (
-          <>
-            <Mail className="w-5 h-5" />
-            Send PDF Implementation Guide
-          </>
-        )}
-      </button>
-    </form>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Main Report Component
-// ---------------------------------------------------------------------------
-export default function AuditReport({ auditId, auditResult, aiSummary }: AuditReportProps) {
-  const { totalCurrentSpend, totalRecommendedSpend, totalMonthlySavings, totalAnnualSavings, tools, isAlreadyOptimal } = auditResult;
-
-  const savingsPercent =
-    totalCurrentSpend > 0 ? Math.round((totalMonthlySavings / totalCurrentSpend) * 100) : 0;
-
-  return (
-    <div className="min-h-screen bg-background text-foreground font-sans relative">
-      <div className="absolute inset-0 bg-grid-pattern pointer-events-none -z-10" />
-      
-      {/* Dynamic Background Gradients */}
-      <div className="fixed top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] -z-20 pointer-events-none translate-x-1/4 -translate-y-1/4" />
-      <div className="fixed bottom-0 left-0 w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[100px] -z-20 pointer-events-none -translate-x-1/4 translate-y-1/4" />
-
-      {/* Modern Navbar */}
-      <header className="border-b border-border bg-background/80 backdrop-blur-lg sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-md bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
-              <span className="font-black text-white text-xs tracking-tighter">CX</span>
+        {/* Decorative Grid Background */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-grid-pattern" />
+        
+        <div className="relative z-10 flex flex-col md:flex-row justify-between gap-12">
+          <div className="space-y-8 flex-grow">
+            <div className="flex items-center gap-3">
+              <span className={isOptimized ? "badge-slate" : "badge-emerald"}>
+                {isOptimized ? 'Audit Verified' : 'Savings Found'}
+              </span>
+              <div className="h-px w-12 bg-slate-100" />
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">
+                Ref ID: {auditId?.slice(0, 8) || 'PREVIEW'}
+              </span>
             </div>
-            <span className="font-black text-slate-900 tracking-tight text-lg">
-              Credex <span className="text-slate-400 font-bold ml-1">Audit</span>
-            </span>
-          </a>
-          <div className="flex items-center gap-4">
+
+            <div className="space-y-4">
+              <h1 className="text-6xl sm:text-8xl font-black tracking-tighter text-slate-900 leading-none">
+                {isOptimized ? (
+                  <span className="flex items-center gap-4">
+                    100<span className="text-slate-200">%</span>
+                  </span>
+                ) : (
+                  <span>${fmt(auditResult.totalMonthlySavings)}</span>
+                )}
+              </h1>
+              <div className="flex items-center gap-2 ml-1">
+                <div className={`w-1.5 h-1.5 rounded-full ${isOptimized ? 'bg-slate-400' : 'bg-emerald-500 animate-pulse'}`} />
+                <p className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[10px]">
+                  {isOptimized ? 'Current Stack Efficiency' : 'Potential Monthly Savings'}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row md:flex-col gap-4 justify-center md:items-end">
             <ShareButton auditId={auditId} />
-            <div className="w-px h-6 bg-border mx-2" />
-            <a
-              href="/"
-              className="text-xs text-primary font-black hover:underline transition"
+            <button 
+              onClick={() => window.print()}
+              className="btn-secondary text-[11px] h-12 px-8 flex items-center justify-center gap-2 group"
             >
-              New Audit
-            </a>
+              Export PDF
+            </button>
           </div>
         </div>
-      </header>
 
-      <main className="max-w-6xl mx-auto px-6 py-16 lg:py-24 grid lg:grid-cols-12 gap-12 items-start relative z-10">
+        <div className="mt-16 pt-10 border-t border-slate-100/50 grid grid-cols-2 md:grid-cols-4 gap-8">
+          <StatBox label="Efficiency" value={`${auditResult.efficiencyScore ?? 100}%`} color="text-slate-900" />
+          <StatBox label="Annual Net" value={`$${fmt(auditResult.totalAnnualSavings)}`} color="text-emerald-500" />
+          <StatBox label="Overlaps" value={auditResult.redundantToolsCount ?? 0} color="text-amber-500" />
+          <StatBox label="Tools Found" value={(auditResult.tools || []).length} color="text-slate-900" />
+        </div>
+      </motion.div>
 
-        {/* Left Column: Summary & Tools */}
-        <div className="lg:col-span-7 space-y-12">
-          <div>
-            <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-100 text-emerald-600 px-4 py-1.5 rounded-md text-xs font-black tracking-wide mb-6">
-              <BadgeCheck className="w-4 h-4" />
-              INTELLIGENCE ANALYSIS VERIFIED
+      {/* Executive Summary Section */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="premium-dark p-10 md:p-14 relative"
+      >
+        <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
+          <ShieldCheck className="w-48 h-48" />
+        </div>
+
+        <div className="relative z-10 space-y-8">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-white/5 backdrop-blur-md flex items-center justify-center border border-white/10">
+              <Zap className="w-5 h-5 text-amber-400 fill-amber-400" />
             </div>
-            
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.05] text-slate-900">
-              {isAlreadyOptimal ? (
-                <>Your AI stack is <span className="text-primary italic">perfectly lean.</span></>
-              ) : (
-                <>
-                  We found <span className="text-emerald-500 italic">${fmt(totalMonthlySavings)}</span> <br />
-                  in monthly waste.
-                </>
-              )}
-            </h1>
-            <p className="mt-6 text-slate-700 text-lg font-bold max-w-2xl leading-relaxed">
-              Based on your stack, you are currently overpaying by roughly <span className="text-slate-900 font-black">{savingsPercent}%</span>.
-              Following these recommendations could recover <span className="text-emerald-500 font-black">${fmt(totalAnnualSavings)}</span> annually.
+            <div>
+              <h3 className="text-sm font-black uppercase tracking-widest text-white/50">Intelligence Report</h3>
+              <h4 className="text-lg font-black text-white">Executive Summary</h4>
+            </div>
+          </div>
+
+          <p className="text-xl md:text-2xl font-medium leading-relaxed text-slate-200 text-balance max-w-3xl">
+            {aiSummary || "We've analyzed your AI stack and identified key optimization opportunities to reduce licensing waste and eliminate tool overlap."}
+          </p>
+
+          <div className="flex items-center gap-6 pt-4">
+            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/40">
+              <BadgeCheck className="w-4 h-4 text-emerald-400" />
+              Verified Analysis
+            </div>
+            <div className="h-4 w-px bg-white/10" />
+            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/40">
+              <Star className="w-4 h-4 text-amber-400" />
+              Credex Certified
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Detailed Recommendations */}
+      <div className="space-y-8">
+        <div className="flex items-end justify-between px-2">
+          <div className="space-y-1">
+            <h3 className="text-2xl font-black tracking-tight text-slate-900">Optimization Matrix</h3>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Deep dive per tool</p>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          {auditResult.tools.map((rec, i) => (
+            <motion.div
+              key={rec.name}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.05 + 0.2 }}
+            >
+              <ToolRow rec={rec} />
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Final Playbook CTA */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        className="glass-panel p-12 md:p-20 text-center relative overflow-hidden"
+      >
+        {/* Background Accent */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-slate-900/[0.02] rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 max-w-2xl mx-auto space-y-10">
+          <div className="space-y-4">
+            <h3 className="text-3xl md:text-5xl font-black tracking-tighter text-slate-900">Get the full playbook.</h3>
+            <p className="text-slate-500 font-medium text-lg leading-relaxed">
+              We'll send you a detailed CSV with specific migration steps, coupon codes for alternatives, and a negotiation template for Enterprise plans.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {[
-              {
-                label: 'Current Carry',
-                value: `$${fmt(totalCurrentSpend)}`,
-                icon: <TrendingUp className="w-4 h-4 text-slate-500" />,
-              },
-              {
-                label: 'Ideal Cost',
-                value: `$${fmt(totalRecommendedSpend)}`,
-                icon: <TrendingDown className="w-4 h-4 text-primary" />,
-              },
-              {
-                label: 'Monthly Gain',
-                value: `$${fmt(totalMonthlySavings)}`,
-                icon: <Zap className="w-4 h-4 text-emerald-500" />,
-              },
-              {
-                label: 'Waste Ratio',
-                value: `${savingsPercent}%`,
-                icon: <AlertTriangle className="w-4 h-4 text-amber-500" />,
-              },
-            ].map((stat) => (
-              <div
-                key={stat.label}
-                className="bg-white border border-slate-200 rounded-md p-5 space-y-3 shadow-sm hover:shadow-md transition-shadow"
+          {!submitted ? (
+            <form onSubmit={handleSendEmail} className="flex flex-col sm:flex-row gap-4">
+              <input
+                type="email"
+                name="email"
+                placeholder="founders@company.com"
+                required
+                className="flex-grow bg-white border-2 border-slate-100 rounded-2xl px-8 py-5 font-bold text-slate-900 placeholder:text-slate-300 focus:border-slate-900 transition-all outline-none"
+              />
+              <button
+                disabled={submitting}
+                className="btn-primary flex items-center justify-center gap-3 px-10 group whitespace-nowrap"
               >
-                <div className="flex items-center gap-2">
-                  {stat.icon}
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-600">
-                    {stat.label}
-                  </p>
-                </div>
-                <p className="text-2xl font-black text-slate-900 font-mono leading-none">{stat.value}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="space-y-6">
-            <h2 className="text-xl font-black text-slate-900 tracking-tight">
-              Tool-by-Tool Breakdown
-            </h2>
-            <div className="space-y-3">
-              {tools.map((rec) => (
-                <ToolRow key={rec.name} rec={rec} />
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Right Column: AI Summary & Lead Capture */}
-        <div className="lg:col-span-5 space-y-8 lg:sticky lg:top-24">
-          {/* AI Summary Card */}
-          {aiSummary && (
-            <div className="bg-primary/5 border border-primary/10 rounded-md p-8 relative overflow-hidden shadow-sm shadow-primary/5">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-              <div className="flex items-center gap-2.5 mb-6">
-                <div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center border border-primary/20">
-                  <Zap className="w-4 h-4 text-primary" />
-                </div>
-                <p className="text-xs font-black uppercase tracking-widest text-primary">
-                  AI Analyst Insight
-                </p>
-              </div>
-              <p className="text-slate-800 text-sm font-bold leading-relaxed italic">
-                &quot;{aiSummary}&quot;
-              </p>
-            </div>
+                {submitting ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <>
+                    Unlock Playbook
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </>
+                )}
+              </button>
+            </form>
+          ) : (
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="bg-emerald-50 text-emerald-700 py-8 px-10 rounded-[2rem] border border-emerald-100/50 flex flex-col items-center gap-2"
+            >
+              <CheckCircle className="w-12 h-12 mb-2" />
+              <span className="font-black text-xl tracking-tight">Access Granted</span>
+              <span className="font-bold text-emerald-600/70">Check your inbox for the playbook.</span>
+            </motion.div>
           )}
-
-          {/* Lead Capture Panel */}
-          <div className="bg-card border border-border rounded-md p-8 shadow-xl shadow-slate-200/50">
-            <div className="mb-8">
-              <h3 className="text-xl font-black text-slate-900 tracking-tight mb-2">
-                Download Savings Guide
-              </h3>
-              <p className="text-slate-600 text-sm font-bold leading-relaxed">
-                Receive the full implementation roadmap and vendor negotiation templates via email.
-              </p>
-            </div>
-            <LeadCaptureForm auditId={auditId} />
-            
-            <div className="mt-8 pt-8 border-t border-border space-y-4">
-              <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 text-center">Included in the PDF</p>
-              <ul className="grid grid-cols-2 gap-3">
-                {[
-                  'Cancellation Templates',
-                  'Seat Clean-up Guide',
-                  'API Usage Benchmarks',
-                  'Migration Checklists'
-                ].map((item) => (
-                  <li key={item} className="flex items-center gap-2 text-[11px] font-black text-slate-700">
-                    <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+          
+          <div className="flex items-center justify-center gap-8 py-4 opacity-50 grayscale hover:grayscale-0 transition-all cursor-default overflow-hidden whitespace-nowrap">
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Trusted by founders at</span>
+            <div className="h-4 w-px bg-slate-200" />
+            <div className="font-black text-xs text-slate-400">YC S24</div>
+            <div className="font-black text-xs text-slate-400">TECHSTARS</div>
+            <div className="font-black text-xs text-slate-400">SEQUOIA</div>
           </div>
         </div>
-      </main>
+      </motion.div>
+    </div>
+  );
+}
+
+function StatBox({ label, value, color }: { label: string; value: string | number; color: string }) {
+  return (
+    <div className="space-y-1 group">
+      <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none mb-2">{label}</p>
+      <p className={`text-2xl font-black tracking-tight ${color} group-hover:scale-105 transition-transform origin-left select-none`}>
+        {value}
+      </p>
     </div>
   );
 }

@@ -145,6 +145,17 @@ export function runAudit(input: AuditInput): AuditResult {
   const totalMonthlySavings = totalCurrentSpend - totalRecommendedSpend;
   const totalAnnualSavings = totalMonthlySavings * 12;
 
+  // Calculate efficiency score (0-100)
+  const efficiencyScore = totalCurrentSpend > 0 
+    ? Math.round((totalRecommendedSpend / totalCurrentSpend) * 100) 
+    : 100;
+
+  // Redundant tools = tools where reason mentions "overlap"
+  const redundantToolsCount = recommendations.filter(r => 
+    r.reason.toLowerCase().includes('overlap') || 
+    r.reason.toLowerCase().includes('redundant')
+  ).length;
+
   // Show Credex upsell if potential savings ≥ $50/mo or if API direct tools are present
   const hasApiTools = tools.some(
     (t) => t.name === 'Anthropic API direct' || t.name === 'OpenAI API direct'
@@ -159,6 +170,8 @@ export function runAudit(input: AuditInput): AuditResult {
     totalRecommendedSpend,
     totalMonthlySavings,
     totalAnnualSavings,
+    efficiencyScore,
+    redundantToolsCount,
     showCredexUpsell,
     isAlreadyOptimal,
   };

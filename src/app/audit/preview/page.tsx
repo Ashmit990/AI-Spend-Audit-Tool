@@ -26,30 +26,45 @@ export default function AuditPreviewPage() {
 
   if (!ready) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="w-10 h-10 animate-spin text-primary" />
+      <div className="min-h-screen bg-[#fcfdfe] flex items-center justify-center">
+        <div className="w-16 h-16 relative">
+          <div className="absolute inset-0 border-4 border-slate-100 rounded-full" />
+          <div className="absolute inset-0 border-4 border-slate-900 border-t-transparent rounded-full animate-spin" />
+        </div>
       </div>
     );
   }
 
   if (!auditResult) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center px-6">
-        <div className="max-w-md w-full bg-card border border-border p-10 rounded-md text-center shadow-xl shadow-primary/5">
-          <h1 className="text-2xl font-black text-foreground mb-4">No Preview Available</h1>
-          <p className="text-foreground/50 text-base font-medium mb-8">
+      <div className="min-h-screen bg-[#fcfdfe] flex items-center justify-center px-6">
+        <div className="max-w-md w-full glass-panel p-10 text-center">
+          <h1 className="text-2xl font-black text-slate-900 mb-4 tracking-tighter">No Preview Available</h1>
+          <p className="text-slate-500 text-base font-medium mb-8 leading-relaxed">
             No audit data found in this session. Please initiate a new scan.
           </p>
           <a
             href="/"
-            className="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white text-sm font-black px-6 py-4 rounded-md shadow-lg shadow-primary/20 transition-all duration-200"
+            className="w-full btn-primary inline-flex items-center justify-center"
           >
-            ← Return to Dashboard
+            Return to Dashboard
           </a>
         </div>
       </div>
     );
   }
 
-  return <AuditReport auditId={null} auditResult={auditResult} aiSummary={aiSummary} />;
+  return (
+    <div className="min-h-screen bg-[#fcfdfe] py-20 px-6">
+      <div className="max-w-7xl mx-auto mb-12 flex items-center justify-between">
+        <a href="/" className="flex items-center gap-3 group">
+          <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+            <span className="font-black text-white text-[8px] tracking-tighter">CX</span>
+          </div>
+          <span className="font-black text-sm tracking-tight text-slate-900">Credex Preview</span>
+        </a>
+      </div>
+      <AuditReport auditId={null} auditResult={auditResult} aiSummary={aiSummary} />
+    </div>
+  );
 }

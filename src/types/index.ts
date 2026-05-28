@@ -37,6 +37,8 @@ export interface AuditResult {
   totalRecommendedSpend: number;
   totalMonthlySavings: number;
   totalAnnualSavings: number;
+  efficiencyScore: number;
+  redundantToolsCount: number;
   showCredexUpsell: boolean;
   isAlreadyOptimal: boolean;
 }
